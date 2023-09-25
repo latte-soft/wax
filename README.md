@@ -1,7 +1,7 @@
 <!-- Links -->
 [stars]: https://github.com/latte-soft/wax/stargazers
 <!--[fork]: https://github.com/latte-soft/wax/fork-->
-[license]: https://github.com/latte-soft/wax/blob/master/LICENSE.txt
+[license]: https://github.com/latte-soft/wax/blob/master/LICENSE
 [latest-release]: https://github.com/latte-soft/wax/releases/latest
 [commits]: https://github.com/latte-soft/wax/commits
 [discord]: https://latte.to/discord
