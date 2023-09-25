@@ -1,3 +1,6 @@
+-- This codegen template *must* be 100% compatible with Lua 5.1x+, NOT just Luau
+-- With that being said, this explains the weird cflow in some parts lol
+
 return [[
 -- Will be used later for getting flattened globals
 local ImportGlobals
