@@ -1,22 +1,22 @@
 <!-- Links -->
-[discord]: https://latte.to/discord
 [stars]: https://github.com/latte-soft/wax/stargazers
 [fork]: https://github.com/latte-soft/wax/fork
 [license]: https://github.com/latte-soft/wax/blob/master/LICENSE.txt
 [latest-release]: https://github.com/latte-soft/wax/releases/latest
 [commits]: https://github.com/latte-soft/wax/commits
+[discord]: https://latte.to/discord
 
 <!-- Badges -->
-[badges/discord]: https://img.shields.io/discord/892211155303538748?label=Latte%20Softworks%20Discord&color=5865F2
 [badges/stars]: https://img.shields.io/github/stars/latte-soft/wax?label=Stars&logo=GitHub
 [badges/fork]: https://img.shields.io/github/forks/latte-soft/wax?label=Forks&logo=GitHub
 [badges/license]: https://img.shields.io/github/license/latte-soft/wax?label=License
 [badges/latest-release]: https://img.shields.io/github/v/release/latte-soft/wax?label=Latest%20Release
 [badges/last-modified]: https://img.shields.io/github/last-commit/latte-soft/wax?label=Last%20Modifed
+[badges/discord]: https://img.shields.io/discord/892211155303538748?label=Latte%20Softworks%20Discord&color=5865F2
 
 # Wax
 
-[![Discord Server][badges/discord]][discord] [![Stars][badges/stars]][stars] [![Fork][badges/fork]][fork] [![License][badges/license]][license] [![Latest Release][badges/latest-release]][latest-release] [![Last Modified][badges/last-modified]][commits]
+[![Stars][badges/stars]][stars] [![Fork][badges/fork]][fork] [![License][badges/license]][license] [![Latest Release][badges/latest-release]][latest-release] [![Last Modified][badges/last-modified]][commits] [![Discord Server][badges/discord]][discord]
 
 A Fast Runtime Lua 5.1x+/Luau Project Bundler, Using Roblox Models and Module-Require Semantics
 
