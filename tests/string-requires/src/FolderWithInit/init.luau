@@ -1,1 +1,1 @@
-return "Modules with 'init' work!"
+return "Modules with 'init' work"

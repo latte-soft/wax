@@ -1,1 +1,1 @@
-return "Hello, Wax! (New Funky Mode!)"
+return "Hello, Wax! (New Funky Mode)"
