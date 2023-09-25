@@ -1,6 +1,6 @@
 <!-- Links -->
 [stars]: https://github.com/latte-soft/wax/stargazers
-[fork]: https://github.com/latte-soft/wax/fork
+<!--[fork]: https://github.com/latte-soft/wax/fork-->
 [license]: https://github.com/latte-soft/wax/blob/master/LICENSE.txt
 [latest-release]: https://github.com/latte-soft/wax/releases/latest
 [commits]: https://github.com/latte-soft/wax/commits
@@ -8,7 +8,7 @@
 
 <!-- Badges -->
 [badges/stars]: https://img.shields.io/github/stars/latte-soft/wax?label=Stars&logo=GitHub
-[badges/fork]: https://img.shields.io/github/forks/latte-soft/wax?label=Forks&logo=GitHub
+<!--[badges/fork]: https://img.shields.io/github/forks/latte-soft/wax?label=Forks&logo=GitHub-->
 [badges/license]: https://img.shields.io/github/license/latte-soft/wax?label=License
 [badges/latest-release]: https://img.shields.io/github/v/release/latte-soft/wax?label=Latest%20Release
 [badges/last-modified]: https://img.shields.io/github/last-commit/latte-soft/wax?label=Last%20Modifed
@@ -16,7 +16,7 @@
 
 # Wax
 
-[![Stars][badges/stars]][stars] [![Fork][badges/fork]][fork] [![License][badges/license]][license] [![Latest Release][badges/latest-release]][latest-release] [![Last Modified][badges/last-modified]][commits] [![Discord Server][badges/discord]][discord]
+[![Stars][badges/stars]][stars] [![License][badges/license]][license] [![Latest Release][badges/latest-release]][latest-release] [![Last Modified][badges/last-modified]][commits] [![Discord Server][badges/discord]][discord]
 
 A Fast Runtime Lua 5.1x+/Luau Project Bundler, Using Roblox Models and Module-Require Semantics
 
