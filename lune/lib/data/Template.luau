@@ -80,7 +80,7 @@ local InstanceMethods = {
     -- Not implementing `recursive` arg, as it isn't needed for us here
     FindFirstChild = function(self, name)
         if not name then
-            error("Argument 1 missing or nil", 2)
+            error("Argument 1 missing or nil", 3)
         end
 
         for Child in next, RefChildren[self] do
@@ -112,7 +112,7 @@ local InstanceMethodProxies = {}
 for MethodName, Method in next, InstanceMethods do
     InstanceMethodProxies[MethodName] = function(self, ...)
         if not RefChildren[self] then
-            error("Expected ':' not '.' calling member function " .. MethodName, 1)
+            error("Expected ':' not '.' calling member function " .. MethodName, 2)
         end
 
         return Method(self, ...)
