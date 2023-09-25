@@ -160,6 +160,25 @@ SUBCOMMANDS:
             "Verbose" (detailed) output logging from CLI/bundler
 ```
 
+## Extra Bundler Spec Details
+
+* Like a model on Roblox's [Developer Marketplace](https://create.roblox.com/marketplace/models), a ModuleScript under the model root named (exactly) "MainModule" will automatically run at init and pass its return through the **real** script
+* Instance `ClassName`s that will bundle:
+  * `Folder`
+  * `Script`
+  * `LocalScript`
+  * `ModuleScript`
+  * `StringValue`
+* Implemented Instance 'properties' :
+  * `Instance.ClassName`
+  * `Instance.Name`
+  * `Instance.Parent`
+  * `StringValue.Value`
+* Implemented Instance 'methods':
+  * `Instance:GetChildren(): {Instance}`
+  * `Instance:FindFirstChild(name: string): Instance?` (The 2nd argument from Roblox, "`recursive`" is omitted)
+  * `Instance:GetFullName(): string`
+
 ## 🏛️ License
 
 *See file: [LICENSE](LICENSE)*
