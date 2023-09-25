@@ -1,0 +1,14 @@
+# Build files etc
+/build
+/*.rbxm
+/*.rbxmx
+/*.rbxl
+/*.rbxlx
+
+/tests/**/build
+/tests/**/*.rbxm
+/tests/**/*.rbxmx
+
+# Misc
+/junk
+/sourcemap.json

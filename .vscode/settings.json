@@ -1,0 +1,5 @@
+{
+    "luau-lsp.completion.imports.requireStyle": "alwaysRelative",
+    "luau-lsp.require.mode": "relativeToFile",
+    "luau-lsp.sourcemap.enabled": true
+}

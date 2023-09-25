@@ -1,0 +1,10 @@
+{
+    "name": "MainModule",
+    "tree": {
+        "$path": "lune/wax.luau",
+
+        "lib": {
+            "$path": "lune/lib"
+        }
+    }
+}
