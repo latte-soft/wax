@@ -9,7 +9,7 @@
 <!-- Badges -->
 [badges/discord]: https://img.shields.io/discord/892211155303538748?label=Discord&color=5865F2
 [badges/stars]: https://img.shields.io/github/stars/latte-soft/wax?label=Stars&logo=GitHub
-[badges/fork]: https://img.shields.io/github/forks/latte-soft/wax?label=Fork&logo=GitHub
+[badges/fork]: https://img.shields.io/github/forks/latte-soft/wax?label=Forks&logo=GitHub
 [badges/license]: https://img.shields.io/github/license/latte-soft/wax?label=License
 [badges/latest-release]: https://img.shields.io/github/v/release/latte-soft/wax?label=Latest%20Release
 [badges/last-modified]: https://img.shields.io/github/last-commit/latte-soft/wax?label=Last%20Modifed
