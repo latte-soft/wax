@@ -64,7 +64,7 @@ Usage: lune [OPTIONS] [SCRIPT_PATH] [SCRIPT_ARGS]...
 
 ### Add Wax to Your Lune Scripts
 
-If you already have a "`lune`" or "`.lune`" directory or similar in your project, feel free to use that - for the sake of this example guide, I'm going to use "`lune`" as the directory for Lune scripts.
+If you already have a "`lune`", "`.lune`", or similar directory in your project for these scripts, feel free to use it - for the sake of this example guide, I'm going to use "`lune`" as the example directory for Lune script(s).
 
 1. If you haven't already, create a directory named "`lune`" in the root of your project
 2. Inside of this newly created directory, create a file named "wax.luau", and paste in the following (or download `wax.luau` from the latest release on the [Releases page](https://github.com/latte-soft/wax/releases))
@@ -89,6 +89,7 @@ local FileLink = if string.lower(WaxVersion) == "latest" then
 else `https://github.com/latte-soft/wax/releases/download/{WaxVersion}/wax.luau`
 
 luau.load(net.request(FileLink).body)()
+
 ```
 
 3. Now, when running `lune wax`, you should see something similar to what's in the next section ([Usage](#🚀-usage)) in your terminal. Voilà!
