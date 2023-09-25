@@ -3,8 +3,8 @@
     MIT License | Copyright (c) 2023 Latte Softworks <https://latte.to>
 ]]
 
--- You can also set the following string to "latest" (case insensitive), or any
--- other tag on Wax's releases page
+-- You set the following string to "latest" (case insensitive), or any version tag
+-- on Wax's releases page (e.g. "0.1.0")
 local WaxVersion = "latest"
 
 -------------------------------------------------------------------------------

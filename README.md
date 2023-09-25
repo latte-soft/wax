@@ -77,9 +77,9 @@ If you already have a "`lune`", "`.lune`", or similar directory in your project 
     MIT License | Copyright (c) 2023 Latte Softworks <https://latte.to>
 ]]
 
--- You can also set the following string to "latest" (case insensitive), or any
--- other tag on Wax's releases page
-local WaxVersion = "0.1.0"
+-- You set the following string to "latest" (case insensitive), or any version tag
+-- on Wax's releases page (e.g. "0.1.0")
+local WaxVersion = "latest"
 
 -------------------------------------------------------------------------------
 
