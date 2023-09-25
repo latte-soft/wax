@@ -160,7 +160,7 @@ SUBCOMMANDS:
             "Verbose" (detailed) output logging from CLI/bundler
 ```
 
-## Extra Bundler Spec Details
+## Bundler Spec Details
 
 * Like a model on Roblox's [Developer Marketplace](https://create.roblox.com/marketplace/models), a ModuleScript under the model root named (exactly) "MainModule" will automatically run at init and pass its return through the **real** script
 * Instance `ClassName`s that will bundle:
