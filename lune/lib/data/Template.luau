@@ -64,7 +64,7 @@ local SharedEnvironment = {}
 local RefChildren = {} -- [Ref] = {ChildrenRef, ...}
 
 local function TryToRemoveRealErrorDebugInfo(errorMessage)
-    return string_match(errorMessage, "[^:]*:?[^:]*:? ?(.+)")
+    return string_match(errorMessage, "[^:]+:[^:]+: (.+)") or errorMessage
 end
 
 -- Implemented instance methods
@@ -402,7 +402,11 @@ function ImportGlobals(refId)
                         return CurrentRefPointer[RealIndex]
                     end)
 
-                    if not IndexSuccess then -- RefOrError is an index error msg
+                    if IndexSuccess then
+                        CurrentRefPointer = RefOrError
+                    else -- RefOrError is an index error msg
+                        local OriginalErrorFormatted = TryToRemoveRealErrorDebugInfo(RefOrError)
+
                         -- We'll try the parent ref if it exists, but if all else, throw the original exception
                         local CurrentRefParent = CurrentRefPointer.Parent
                         if CurrentRefParent then
@@ -411,14 +415,14 @@ function ImportGlobals(refId)
                             end)
 
                             if ParentIndexSuccess then
-                                return ParentIndexRef
+                                CurrentRefPointer = ParentIndexRef
+                            else
+                                error(OriginalErrorFormatted, 2)
                             end
+                        else
+                            error(OriginalErrorFormatted, 2)
                         end
-
-                        error(TryToRemoveRealErrorDebugInfo(RefOrError), 2)
                     end
-
-                    CurrentRefPointer = RefOrError
                 end
             end
 

@@ -6,11 +6,11 @@ table,unpack,coroutine,script,type,require,pcall,getfenv,setfenv,rawget local y,
 insert,n.remove,n.freeze or function(y)return y end,p.wrap,h and h.defer,f.huge,g.sub,g.match,g.
 gmatch local H,I,J,K,L,M,N,O,P,Q=C or function(H,...)B(H)(...)end,{[1]='Folder',[2]='ModuleScript',[
 3]='Script',[4]='LocalScript',[5]='StringValue'},{},{},{},{},{},{},{},function(H)return F(H,
-'[^:]*:?[^:]*:? ?(.+)')end local R,S={GetChildren=function(R)local S,T=P[R],{}for U in m,S do y(T,U)
-end return T end,FindFirstChild=function(R,S)if not S then j('Argument 1 missing or nil',2)end for T
-in m,P[R]do if T.Name==S then return T end end return end,GetFullName=function(R)local S,T=R.Name,R.
-Parent while T do S=T.Name..'.'..S T=T.Parent end return S end},{}for T,U in m,R do S[T]=function(V,
-...)if not P[V]then j("Expected ':' not '.' calling member function "..T,1)end return U(V,...)end
+'[^:]+:[^:]+: (.+)')or H end local R,S={GetChildren=function(R)local S,T=P[R],{}for U in m,S do y(T,
+U)end return T end,FindFirstChild=function(R,S)if not S then j('Argument 1 missing or nil',3)end for
+T in m,P[R]do if T.Name==S then return T end end return end,GetFullName=function(R)local S,T=R.Name,
+R.Parent while T do S=T.Name..'.'..S T=T.Parent end return S end},{}for T,U in m,R do S[T]=function(
+V,...)if not P[V]then j("Expected ':' not '.' calling member function "..T,2)end return U(V,...)end
 end local aa=function(V,W,X)local Y,Z,_,aa,ab=i({},{__mode='k'}),function(Y)j(Y..
 ' is not a valid (virtual) member of '..V..' "'..W..'"',3)end,function(Y)j(
 'Unable to assign (virtual) property '..Y..'. Property is read only',3)end,(k(true))local ac=l(aa)ac
@@ -38,9 +38,9 @@ ap,aq=A{version='0.1.0',shared=Y,script=q,require=s,getfenv=u,setfenv=v},aj,func
 am,1,1)~='@'then if#am==0 then j('Attempted to call require with empty string',2)end local an=aj if
 E(am,1,1)=='/'then an=ac elseif E(am,1,2)=='./'then am=E(am,3)end for ao in G(am,'([^/]*)/?')do
 local ap=ao if ao=='..'then ap='Parent'end if ap~=''and ao~='init'then local aq,ar=t(function()
-return an[ap]end)if not aq then local as=an.Parent if as then local at,au=t(function()return as[ap]
-end)if at then return au end end j(Q(ar),2)end an=ar end end if an.ClassName~='ModuleScript'then j(
-'Attempted to call require with a non-ModuleScript',2)elseif an==aj then j(
+return an[ap]end)if aq then an=ar else local as,at=Q(ar),an.Parent if at then local au,av=t(function
+()return at[ap]end)if au then an=av else j(as,2)end else j(as,2)end end end end if an.ClassName~=
+'ModuleScript'then j('Attempted to call require with a non-ModuleScript',2)elseif an==aj then j(
 [[Attempted to call require with self (You cannot require 'yourself')]],2)end return ah(an)end
 return W(s,am,...)end,function(am,...)if not V then al()end if r(am)=='number'and am>=0 then if am==
 0 then return _ else am=am+1 local an,ao=t(u,am)if an and ao==Z then return _ end end end return W(u
