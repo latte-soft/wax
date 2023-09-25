@@ -69,7 +69,7 @@ If you already have a "`lune`", "`.lune`", or similar directory in your project 
 1. If you haven't already, create a directory named "`lune`" in the root of your project
 2. Inside of this newly created directory, create a file named "wax.luau", and paste in the following (or download `wax.luau` from the latest release directly on the [releases page](https://github.com/latte-soft/wax/releases))
 
-*(DO NOTE, if you're using the 'remote' loader below, you won't be able to use Wax offline, and request times per running the script could be impractical for both speed and efficiency depending on your internet connection; consider manually installing `wax.luau` from the latest release on the releases page, linked above)*
+*(DO NOTE: if you're using the 'remote' loader below, you won't be able to use Wax offline, and request times per running the script could be impractical for both speed and efficiency depending on your internet connection; consider manually installing `wax.luau` from the latest release on the releases page, linked above)*
 
 ```lua
 --[[
