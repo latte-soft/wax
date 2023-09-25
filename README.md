@@ -170,10 +170,10 @@ SUBCOMMANDS:
   * `ModuleScript`
   * `StringValue`
 * Implemented Instance 'properties' :
-  * `Instance.ClassName`
-  * `Instance.Name`
-  * `Instance.Parent`
-  * `StringValue.Value`
+  * `Instance.ClassName: string`
+  * `Instance.Name: string`
+  * `Instance.Parent: Instance?`
+  * `StringValue.Value: string`
 * Implemented Instance 'methods':
   * `Instance:GetChildren(): {Instance}`
   * `Instance:FindFirstChild(name: string): Instance?` (The 2nd argument from Roblox, "`recursive`" is omitted)
