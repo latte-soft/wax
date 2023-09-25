@@ -7,7 +7,7 @@
 [commits]: https://github.com/latte-soft/wax/commits
 
 <!-- Badges -->
-[badges/discord]: https://img.shields.io/discord/892211155303538748?label=Discord&color=5865F2
+[badges/discord]: https://img.shields.io/discord/892211155303538748?label=Latte%20Softworks%20Discord&color=5865F2
 [badges/stars]: https://img.shields.io/github/stars/latte-soft/wax?label=Stars&logo=GitHub
 [badges/fork]: https://img.shields.io/github/forks/latte-soft/wax?label=Forks&logo=GitHub
 [badges/license]: https://img.shields.io/github/license/latte-soft/wax?label=License
