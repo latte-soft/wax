@@ -20,7 +20,7 @@ task.spawn(function()
 end)
 
 New "ScreenGui" {
-    Name = "MauiWithFusion",
+    Name = "WaxWithFusion",
     Parent = PlayerGui,
 
     DisplayOrder = 100,

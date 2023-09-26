@@ -2,8 +2,8 @@ local a local av,aw,ax,ay,az,aA,aB,aC,aD,aE,aF,aG,aH,aI,aJ,aK,aL,J,K,L,M={functi
 ,f,g=a(1)b[1]=function()c,d,e,f,g=nil,nil,nil,nil,nil end local h,i local j=game:GetService'Players'
 local k=j.LocalPlayer local l,m=k:FindFirstChildWhichIsA'PlayerGui',e(d.Fusion)local n,o,p,q=m.New,m
 .Children,m.Value,m.Computed local r=p(0)task.spawn(function()for s=1,50 do r:set(r:get()+1)task.
-wait(1)end end)n'ScreenGui'{Name='MauiWithFusion',Parent=l,DisplayOrder=100,ResetOnSpawn=false,[o]={
-n'TextLabel'{Name='Hello',AutomaticSize=Enum.AutomaticSize.XY,AnchorPoint=Vector2.new(0.5,0.5),
+wait(1)end end)n'ScreenGui'{Name='WaxWithFusion',Parent=l,DisplayOrder=100,ResetOnSpawn=false,[o]={n
+'TextLabel'{Name='Hello',AutomaticSize=Enum.AutomaticSize.XY,AnchorPoint=Vector2.new(0.5,0.5),
 BackgroundColor3=Color3.fromRGB(44,56,63),Position=UDim2.fromScale(0.5,0.5),Font=Enum.Font.
 GothamMedium,Text=q(function()return'Hello, Wax & Fusion!\nTesting.. Testing... '..r:get()end),
 TextColor3=Color3.fromRGB(218,223,228),TextSize=16,TextWrapped=true,[o]={n'UIPadding'{PaddingTop=
@@ -459,18 +459,18 @@ setmetatable(aE,aF)end function aF.__index(aG,aH)aC('strictReadError',nil,tostri
 aE end return aD end,[55]=function(...)local au,av,aw,ax,ay,az=a(55)au[1]=function()av,aw,ax,ay,az=
 nil,nil,nil,nil,nil end local aA,aB local aC=function(aC)local aD=typeof(aC)if aD=='table'and
 typeof(aC.type)=='string'then return aC.type else return aD end end return aC end},{{1,4,{'Test'},{{
-2,2,{'Fusion'},{{38,2,{'PubTypes'}},{15,1,{'Dependencies'},{{19,2,{'updateAll'}},{16,2,{
-'captureDependencies'}},{17,2,{'initDependency'}},{20,2,{'useDependency'}},{18,2,{'sharedState'}}}},
-{13,1,{'Colour'},{{14,2,{'Oklab'}}}},{48,1,{'Utility'},{{52,2,{'isSimilar'}},{55,2,{'xtypeof'}},{51,
-2,{'doNothing'}},{49,2,{'None'}},{50,2,{'cleanup'}},{54,2,{'restrictRead'}},{53,2,{
-'needsDestruction'}}}},{39,1,{'State'},{{40,2,{'Computed'}},{46,2,{'unwrap'}},{44,2,{'Observer'}},{
-45,2,{'Value'}},{41,2,{'ForKeys'}},{43,2,{'ForValues'}},{42,2,{'ForPairs'}}}},{47,2,{'Types'}},{3,1,
-{'Animation'},{{9,2,{'lerpType'}},{4,2,{'Spring'}},{5,2,{'SpringScheduler'}},{8,2,{'getTweenRatio'}}
-,{7,2,{'TweenScheduler'}},{11,2,{'springCoefficients'}},{6,2,{'Tween'}},{12,2,{'unpackType'}},{10,2,
-{'packType'}}}},{21,1,{'Instances'},{{24,2,{'Hydrate'}},{23,2,{'Cleanup'}},{22,2,{'Children'}},{30,2
-,{'applyInstanceProps'}},{31,2,{'defaultProps'}},{28,2,{'Out'}},{25,2,{'New'}},{29,2,{'Ref'}},{27,2,
-{'OnEvent'}},{26,2,{'OnChange'}}}},{32,1,{'Logging'},{{36,2,{'messages'}},{37,2,{'parseError'}},{35,
-2,{'logWarn'}},{33,2,{'logError'}},{34,2,{'logErrorNonFatal'}}}}}}}}},math,string,task,setmetatable,
+2,2,{'Fusion'},{{21,1,{'Instances'},{{29,2,{'Ref'}},{23,2,{'Cleanup'}},{27,2,{'OnEvent'}},{26,2,{
+'OnChange'}},{22,2,{'Children'}},{31,2,{'defaultProps'}},{30,2,{'applyInstanceProps'}},{28,2,{'Out'}
+},{25,2,{'New'}},{24,2,{'Hydrate'}}}},{39,1,{'State'},{{41,2,{'ForKeys'}},{40,2,{'Computed'}},{42,2,
+{'ForPairs'}},{45,2,{'Value'}},{46,2,{'unwrap'}},{44,2,{'Observer'}},{43,2,{'ForValues'}}}},{47,2,{
+'Types'}},{38,2,{'PubTypes'}},{3,1,{'Animation'},{{11,2,{'springCoefficients'}},{5,2,{
+'SpringScheduler'}},{12,2,{'unpackType'}},{8,2,{'getTweenRatio'}},{10,2,{'packType'}},{4,2,{'Spring'
+}},{7,2,{'TweenScheduler'}},{6,2,{'Tween'}},{9,2,{'lerpType'}}}},{15,1,{'Dependencies'},{{19,2,{
+'updateAll'}},{20,2,{'useDependency'}},{17,2,{'initDependency'}},{18,2,{'sharedState'}},{16,2,{
+'captureDependencies'}}}},{32,1,{'Logging'},{{33,2,{'logError'}},{34,2,{'logErrorNonFatal'}},{37,2,{
+'parseError'}},{36,2,{'messages'}},{35,2,{'logWarn'}}}},{48,1,{'Utility'},{{49,2,{'None'}},{52,2,{
+'isSimilar'}},{50,2,{'cleanup'}},{55,2,{'xtypeof'}},{51,2,{'doNothing'}},{54,2,{'restrictRead'}},{53
+,2,{'needsDestruction'}}}},{13,1,{'Colour'},{{14,2,{'Oklab'}}}}}}}}},math,string,task,setmetatable,
 error,newproxy,getmetatable,next,table,unpack,coroutine,script,type,require,pcall,getfenv,setfenv,
 rawget local N,O,P,Q,R,S,T,U=aF.insert,aF.remove,aF.freeze or function(N)return N end,aH.wrap,ax.
 huge,ay.sub,ay.match,ay.gmatch if _VERSION and S(_VERSION,1,4)=='Lune'then local V,W=aL(aK,
