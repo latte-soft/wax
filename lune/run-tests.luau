@@ -40,7 +40,7 @@ for _, TestName in fs.readDir("tests") do
     local BundleResultMin = Run(`lune wax bundle input={RojoProjectFilePath} output={OutputScriptPathMin} minify=true ci-mode=true verbose=false`)
 
     local BadResult = if not BundleResult.ok then BundleResult elseif not BundleResultMin.ok then BundleResultMin else nil
-    if BadResult then
+    if BadResult and not fs.isFile(`tests/{TestName}/do-not-exit-for-build-errors`) then
         print()
         Log.Error(`Test "{TestName}" failed to build (SEE COMMAND LOG ABOVE FOR DETAILS), aborting!`)
         process.exit(1)
@@ -53,11 +53,14 @@ end
 print("\n++++++++++ STARTING TEST RUNNER PROCESS ++++++++++\n")
 
 for _, ScriptPath in ScriptFilesToTest do
-    Log.Info(`Running script file "{StringUtils.FileNameFromPath(ScriptPath)}" for all targets..`)
+    Log.Info(`Running script file "{StringUtils.FileNameFromPath(ScriptPath)}" for all targets..\n`)
 
     Run(`lua5.1 {ScriptPath}`)
-    Run(`luau {ScriptPath}`)
-    Run(`lune {ScriptPath}`)
-
     print()
+    Run(`luau {ScriptPath}`)
+    print()
+    Run(`lune {ScriptPath}`)
+    print()
+
+    print("--------------------------------------------------------------------------------\n")
 end

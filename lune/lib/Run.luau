@@ -4,16 +4,8 @@ local process = require("@lune/process")
 
 local Log = require("Log")
 
-local function DefaultErrorHandler(message: string?)
-    if message then
-        Log.Error(message)
-    end
-end
-
 local function Run(command: string, directRun: boolean?, errorHandler: (string?) -> ()?): process.SpawnResult
     directRun = if directRun == nil then false else directRun
-    
-    local ErrorHandler = errorHandler or DefaultErrorHandler
 
     if not directRun then
         Log.Info(`> {command}`)
@@ -24,8 +16,8 @@ local function Run(command: string, directRun: boolean?, errorHandler: (string?)
         stdio = if directRun then "default" else "inherit",
     })
 
-    if not directRun and not Result.ok then
-        ErrorHandler(`Command failed with status code {Result.code}, exitting..`)
+    if not Result.ok and errorHandler then
+        errorHandler(`Command above failed with status code {Result.code}`)
     end
 
     return Result
