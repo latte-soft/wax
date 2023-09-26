@@ -27,13 +27,22 @@ local table_freeze = table.freeze or function(t) return t end
 
 local coroutine_wrap = coroutine.wrap
 
-local task_defer = task and task.defer
-
 local math_huge = math.huge
 
 local string_sub = string.sub
 local string_match = string.match
 local string_gmatch = string.gmatch
+
+-- The Lune runtime has its own `task` impl, but it must be imported by its builtin
+-- module path, "@lune/task"
+if _VERSION and string_sub(_VERSION, 1, 4) == "Lune" then
+    local RequireSuccess, LuneTaskLib = pcall(require, "@lune/task")
+    if RequireSuccess and LuneTaskLib then
+        task = LuneTaskLib
+    end
+end
+
+local task_defer = task and task.defer
 
 -- If we're not running on the Roblox engine, we won't have a `task` global
 local Defer = task_defer or function(f, ...)
@@ -292,6 +301,9 @@ local function LoadScript(scriptRef)
             local LineOffset = LineOffsets[RefId]
 
             local RealErrorLine = OriginalErrorLine - LineOffset + 1
+            if RealErrorLine < 0 then
+                RealErrorLine = "*"
+            end
 
             return VirtualFullName .. ":" .. RealErrorLine .. ": " .. BaseErrorMessage
         else
