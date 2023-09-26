@@ -1,5 +1,8 @@
 -- MIT License | Copyright (c) 2023 Latte Softworks <https://latte.to>
 
+-- This is a basic automated "test" runner, just for overlooking basic
+-- functionality and making sure everything works as expected and implemented
+
 local fs = require("@lune/fs")
 local process = require("@lune/process")
 
