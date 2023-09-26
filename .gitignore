@@ -5,9 +5,8 @@
 /*.rbxl
 /*.rbxlx
 
-/tests/**/build
-/tests/**/*.rbxm
-/tests/**/*.rbxmx
+/tests/**/*.wax.lua
+/tests/**/*.wax.luau
 
 # Misc
 /junk

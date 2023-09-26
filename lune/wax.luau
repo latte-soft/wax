@@ -183,7 +183,7 @@ elseif Subcommand == "bundle" then
             process.exit(1)
         end
 
-        Output ..= ".lua"
+        Output ..= ".wax.lua"
     else
         local OutputFileType = StringUtils.FileType(Output)
         local DirectoryOfOutput = StringUtils.DirectoryOfFilePath(Output)
@@ -322,13 +322,8 @@ elseif Subcommand == "bundle" then
         local ModelOutputFileName = TempDir .. OutputFileNameWithoutExtension .. ".o.rbxm"
         RunIfVerbose(Log.Info, `Building from Rojo project file to "{ModelOutputFileName}"`)
 
-        local ExtraRojoArgs = ""
-        if Verbose then
-            ExtraRojoArgs ..= "-v "
-        end
-
-        Run(
-            `rojo build -o {ModelOutputFileName} {ExtraRojoArgs}{Input}`,
+        local RojoRunResult = Run(
+            `rojo build -o {ModelOutputFileName} {Input}`,
             false,
             BadExit -- Run() has an option to provide an err handler ourselves
         )
