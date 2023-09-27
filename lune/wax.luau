@@ -20,6 +20,7 @@ do
 end
 
 local fs = require("@lune/fs")
+local serde = require("@lune/serde")
 local stdio = require("@lune/stdio")
 local roblox = require("@lune/roblox")
 local process = require("@lune/process")
@@ -122,7 +123,7 @@ elseif Subcommand == "bundle" then
     -- Parse and init default CLI options
     local Options = ParseArgs(process.args, {
         -- Option = {Type, DefaultValue, IsRequired?}
-        ["input"] = {"string", "default.project.json", true},
+        ["input"] = {"string", "default.project.json"},
         ["output"] = {"string", nil},
         ["minify"] = {"boolean", false},
         ["env-name"] = {"string", nil}, -- BundleModel() internally defaults to "[VirtualEnv]"
@@ -176,19 +177,55 @@ elseif Subcommand == "bundle" then
         process.exit(1)
     end
 
+    local InputLower = string.lower(Input)
+    local InputType = if string.sub(InputLower, -5) == ".rbxm" then
+            ".rbxm" -- Roblox model (binary)
+        elseif string.sub(InputLower, -6) == ".rbxmx" then
+            ".rbxmx" -- Roblox model (XML)
+        elseif string.sub(InputLower, -13) == ".project.json" then
+            ".project.json" -- Rojo project file
+        else nil
+
+    if not InputType then
+        Log.Error(`Invalid file type ".{StringUtils.FileType(Input)}" for \`input\`, expected [".rbxm", ".rbxmx", ".project.json"]\n`)
+        print(UsageMessage)
+        process.exit(1)
+    end
+
     -- `output` option handling:
 
     local Output = Options["output"]
 
     if not Output then
-        Output = StringUtils.FilePathWithoutExtension(Input, false)
+        local NewOutputBase
+
+        if InputType == ".project.json" then
+            local ParseSuccess, ErrorOrParsed = pcall(serde.decode, "json" :: "json", fs.readFile(Input))
+
+            if not ParseSuccess then
+                Log.Error(`Failed to parse Rojo project file at "{Input}": {ErrorOrParsed}`)
+                process.exit(1)
+            end
+
+            if not ErrorOrParsed.name or type(ErrorOrParsed.name) ~= "string" then
+                Log.Warn(`Couldn't find proper "name" entry at the root of Rojo project file at "{Input}", using its file name base instead..`)
+            else
+                NewOutputBase = ErrorOrParsed.name
+            end
+        end
+
+        -- If it's not a Rojo project file or `NewOutputBase` still hasn't been set..
+        if not NewOutputBase then
+            NewOutputBase = StringUtils.FilePathWithoutExtension(Input, false)
+        end
         
-        if not Output then
-            Log.InternalError(`Failed to get file path without the extension for "{Output}"\n`)
+        if not NewOutputBase then
+            Log.InternalError(`Failed to get file path without the extension for "{Output}"`)
             process.exit(1)
         end
 
-        Output ..= ".wax.lua"
+        NewOutputBase ..= ".wax.lua"
+        Output = NewOutputBase
     else
         local OutputFileType = StringUtils.FileType(Output)
         local DirectoryOfOutput = StringUtils.DirectoryOfFilePath(Output)
@@ -270,21 +307,6 @@ elseif Subcommand == "bundle" then
             RemoveDir(TempDir)
         end
 
-        process.exit(1)
-    end
-
-    local InputLower = string.lower(Input)
-    local InputType = if string.sub(InputLower, -5) == ".rbxm" then
-            ".rbxm" -- Roblox model (binary)
-        elseif string.sub(InputLower, -6) == ".rbxmx" then
-            ".rbxmx" -- Roblox model (XML)
-        elseif string.sub(InputLower, -13) == ".project.json" then
-            ".project.json" -- Rojo project file
-        else nil
-
-    if not InputType then
-        Log.Error(`Invalid file type for \`input\` of "{Input}", expected [".rbxm", ".rbxmx", ".project.json"]\n`)
-        print(UsageMessage)
         process.exit(1)
     end
 
