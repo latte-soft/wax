@@ -120,7 +120,7 @@ SUBCOMMANDS:
               available in your PATH environment variable), to an output path
 
       OPTIONS for `bundle`:
-      * input (REQUIRED*)
+      * input[=default.project.json]
             The input Roblox model (*.rbxm/*.rbxmx) or Rojo project (*.project.json) file
             path for Wax to bundle from
 

@@ -54,7 +54,7 @@ SUBCOMMANDS:
               available in your PATH environment variable), to an output path
 
       OPTIONS for `bundle`:
-      * input (REQUIRED*)
+      * input[=default.project.json]
             The input Roblox model (*.rbxm/*.rbxmx) or Rojo project (*.project.json) file
             path for Wax to bundle from
 
@@ -122,7 +122,7 @@ elseif Subcommand == "bundle" then
     -- Parse and init default CLI options
     local Options = ParseArgs(process.args, {
         -- Option = {Type, DefaultValue, IsRequired?}
-        ["input"] = {"string", nil, true},
+        ["input"] = {"string", "default.project.json", true},
         ["output"] = {"string", nil},
         ["minify"] = {"boolean", false},
         ["env-name"] = {"string", nil}, -- BundleModel() internally defaults to "[VirtualEnv]"
@@ -171,7 +171,7 @@ elseif Subcommand == "bundle" then
     local Input = Options["input"]
 
     if not fs.isFile(Input) then
-        Log.Error(`\`input\` file path given, "{Input}" not found/invalid\n`)
+        Log.Error(`Failed to find file path "{Input}" from \`input\` option\n`)
         print(UsageMessage)
         process.exit(1)
     end
