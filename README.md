@@ -113,6 +113,8 @@ USAGE:
 SUBCOMMANDS:
     help      Displays this usage message
 
+    version   Displays Wax's version
+
     bundle    Builds a bundled script file from a given Roblox model (*.rbxm/*.rbxmx)
               or Rojo project file (*.project.json, requires the `rojo` command
               available in your PATH environment variable), to an output path

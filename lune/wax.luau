@@ -47,6 +47,8 @@ USAGE:
 SUBCOMMANDS:
     help      Displays this usage message
 
+    version   Displays Wax's version
+
     bundle    Builds a bundled script file from a given Roblox model (*.rbxm/*.rbxmx)
               or Rojo project file (*.project.json, requires the `rojo` command
               available in your PATH environment variable), to an output path
@@ -109,6 +111,9 @@ Subcommand = string.lower(Subcommand)
 
 if Subcommand == "help" then
     print(UsageMessage)
+    return
+elseif Subcommand == "version" then
+    print(`Wax v{Version}`)
     return
 elseif Subcommand == "bundle" then
     -- Below is our user-proofing hell!
