@@ -75,6 +75,11 @@ SUBCOMMANDS:
             The name of the "environment" of the bundled script. This is the "name" of
             the root object (like the `game` DataModel in Roblox) and displays in virtual
             runtime errors (e.g. "[VirtualEnv].Script: Some error message")
+    
+      * darklua-config-path[=(.darklua.json/.darklua.json5)]
+            When `minify` is set as true, this path can be used to directly pass your own
+            Darklua config file's path, instead of only checking for the default paths
+            it looks for
 
       * temp-dir-base[={output-dir}]
             If you're providing a Rojo project file as input or minifying with Darklua,
@@ -127,6 +132,7 @@ elseif Subcommand == "bundle" then
         ["output"] = {"string", nil},
         ["minify"] = {"boolean", false},
         ["env-name"] = {"string", nil}, -- BundleModel() internally defaults to "[VirtualEnv]"
+        ["darklua-config-path"] = {"string", nil},
         ["temp-dir-base"] = {"string", nil},
         ["extra-offset-lines"] = {"number", 0},
         ["ci-mode"] = {"boolean", false},
@@ -259,6 +265,15 @@ elseif Subcommand == "bundle" then
         process.exit(1)
     end
 
+    -- `darklua-config-path` option handling:
+
+    DarkluaConfigPath = Options["darklua-config-path"]
+
+    if DarkluaConfigPath and not fs.isFile(DarkluaConfigPath) then
+        Log.Error(`File path given for \`darklua-config-path\`, "{DarkluaConfigPath}" not found`)
+        process.exit(1)
+    end
+
     -- `temp-dir-base` option handling:
 
     local TempDirBase = Options["temp-dir-base"]
@@ -374,21 +389,20 @@ elseif Subcommand == "bundle" then
 
         local ExtraDarkluaProcessArgs = ""
 
-        if Verbose then
-            ExtraDarkluaProcessArgs ..= "-v "
-        end
-
         -- Check for possible default Darklua cfg files under CWD
         local TempDarkluaConfigPath = TempDir .. ".darklua.json"
         local TempDarkluaConfigWasAdded = false
-        if not fs.isFile(".darklua.json") and not fs.isFile(".darklua.json5") then
+
+        if DarkluaConfigPath then
+            ExtraDarkluaProcessArgs ..= `-c "{DarkluaConfigPath}" `
+        elseif not fs.isFile(".darklua.json") and not fs.isFile(".darklua.json5") then
             RunIfVerbose(Log.Info, `No default Darklua config file found in CWD; creating our default config at "{TempDarkluaConfigPath}"`)
             WriteFile(TempDarkluaConfigPath, DefaultDarkluaConfig)
             TempDarkluaConfigWasAdded = true
             ExtraDarkluaProcessArgs ..= `-c "{TempDarkluaConfigPath}" `
         end
 
-        Run(`darklua process {TempOutputFilePath} {Output}`)
+        Run(`darklua process {ExtraDarkluaProcessArgs}{TempOutputFilePath} {Output}`)
         RunIfVerbose(Log.Info, `Wrote final minified output to "{Output}"`)
 
         RemoveFile(TempOutputFilePath)

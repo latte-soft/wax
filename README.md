@@ -140,6 +140,11 @@ SUBCOMMANDS:
             The name of the "environment" of the bundled script. This is the "name" of
             the root object (like the `game` DataModel in Roblox) and displays in virtual
             runtime errors (e.g. "[VirtualEnv].Script: Some error message")
+    
+      * darklua-config-path[=(.darklua.json/.darklua.json5)]
+            When `minify` is set as true, this path can be used to directly pass your own
+            Darklua config file's path, instead of only checking for the default paths
+            it looks for
 
       * temp-dir-base[={output-dir}]
             If you're providing a Rojo project file as input or minifying with Darklua,
