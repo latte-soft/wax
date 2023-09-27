@@ -360,7 +360,7 @@ elseif Subcommand == "bundle" then
         local TempDarkluaConfigPath = TempDir .. ".darklua.json"
         local TempDarkluaConfigWasAdded = false
         if not fs.isFile(".darklua.json") and not fs.isFile(".darklua.json5") then
-            RunIfVerbose(Log.Info, `No default Darklua config file found in CWD; creating our default config at ""`)
+            RunIfVerbose(Log.Info, `No default Darklua config file found in CWD; creating our default config at "{TempDarkluaConfigPath}"`)
             WriteFile(TempDarkluaConfigPath, DefaultDarkluaConfig)
             TempDarkluaConfigWasAdded = true
             ExtraDarkluaProcessArgs ..= `-c "{TempDarkluaConfigPath}" `
