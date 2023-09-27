@@ -183,6 +183,8 @@ elseif Subcommand == "bundle" then
         process.exit(1)
     end
 
+    local InputDirectory = StringUtils.DirectoryOfFilePath(Input) or ""
+
     local InputLower = string.lower(Input)
     local InputType = if string.sub(InputLower, -5) == ".rbxm" then
             ".rbxm" -- Roblox model (binary)
@@ -231,7 +233,7 @@ elseif Subcommand == "bundle" then
         end
 
         NewOutputBase ..= ".wax.lua"
-        Output = NewOutputBase
+        Output = InputDirectory .. NewOutputBase
     else
         local OutputFileType = StringUtils.FileType(Output)
         local DirectoryOfOutput = StringUtils.DirectoryOfFilePath(Output)
