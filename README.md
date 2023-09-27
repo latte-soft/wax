@@ -90,7 +90,9 @@ local FileLink = if string.lower(WaxVersion) == "latest" then
     "https://github.com/latte-soft/wax/releases/latest/download/wax.luau"
 else `https://github.com/latte-soft/wax/releases/download/{WaxVersion}/wax.luau`
 
-luau.load(net.request(FileLink).body)()
+luau.load(net.request(FileLink).body, {
+    debugName = "Wax",
+})()
 
 ```
 
