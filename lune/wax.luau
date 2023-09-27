@@ -327,7 +327,7 @@ elseif Subcommand == "bundle" then
         local ModelOutputFileName = TempDir .. OutputFileNameWithoutExtension .. ".o.rbxm"
         RunIfVerbose(Log.Info, `Building from Rojo project file to "{ModelOutputFileName}"`)
 
-        local RojoRunResult = Run(
+        Run(
             `rojo build -o {ModelOutputFileName} {Input}`,
             false,
             BadExit -- Run() has an option to provide an err handler ourselves
