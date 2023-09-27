@@ -4,7 +4,6 @@
         "column_span": 100
     },
     "rules": [
-        "convert_local_function_to_assign",
         "convert_index_to_field",
         "compute_expression",
         "group_local_assignment",
