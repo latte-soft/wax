@@ -119,7 +119,7 @@ local function BundleModel(modelData: string | {roblox.Instance}, envName: strin
                 -- We're using `FunctionsReturnRaw` on LuaEncode later, this will set the return
                 -- to the rew value, which is the script closure
                 ClosureBindings[RefId] = function()
-                    return "function(...)local LocalSignals,wax,script,require,getfenv,setfenv=ImportGlobals(" .. RefId .. ")LocalSignals[1]=function()wax,script,require,getfenv,setfenv=nil,nil,nil,nil,nil end LocalSignals=nil " .. ScriptSource .. "\nend"
+                    return "function()local wax,script,require,getfenv,setfenv=ImportGlobals(" .. RefId .. ")return (function(...)" .. ScriptSource .. "\nend)() end"
                 end
             else
                 -- The `18` index in the substring call is for after the end of, e.g. "runtime error: :"
