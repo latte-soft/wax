@@ -333,7 +333,7 @@ local function LoadScript(scriptRef)
 end
 
 -- We'll assign the actual func from the top of this output for flattening user globals at runtime
--- Returns (in a tuple order): LocalSignals, wax, script, require, getfenv, setfenv
+-- Returns (in a tuple order): wax, script, require, getfenv, setfenv
 function ImportGlobals(refId)
     local ScriptRef = RefBindings[refId]
 
@@ -359,10 +359,6 @@ function ImportGlobals(refId)
 
         return unpack(PCallReturn)
     end
-
-    -- LocalSignals[1] = function() - Upon calling, all fake globals will be de-localized
-    -- for when the env is set manually thru getfenv/setfenv
-    local LocalSignals = {}
 
     -- `wax.shared` index
     local WaxShared = setmetatable({}, {
@@ -524,13 +520,12 @@ function ImportGlobals(refId)
         })
 
         setfenv(Closure, VirtualEnv)
-        LocalSignals[1]()
 
         EnvHasBeenSet = true
     end
 
     -- Now, return flattened globals ready for direct runtime exec
-    return LocalSignals, Global_wax, Global_script, Global_require, Global_getfenv, Global_setfenv
+    return Global_wax, Global_script, Global_require, Global_getfenv, Global_setfenv
 end
 
 for _, ScriptRef in next, ScriptsToRun do
