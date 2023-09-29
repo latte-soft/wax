@@ -71,8 +71,8 @@ end
 WriteDir("build")
 Copy("LICENSE", "build/LICENSE")
 
-local function HandleRun(command: string)
-    local Result = Run(command)
+local function HandleRun(...)
+    local Result = Run(...)
     if not Result.ok then
         RemoveDir("build")
         process.exit(1)
@@ -80,11 +80,11 @@ local function HandleRun(command: string)
 end
 
 if BuildMode == "debug" then
-    HandleRun(`lune wax bundle input=default.project.json output=build/wax.luau extra-offset-lines={CodegenHeaderExtraLines} ci-mode=true`)
+    HandleRun("lune", {"wax", "bundle", "input=default.project.json", "output=build/wax.luau", `extra-offset-lines={CodegenHeaderExtraLines}`, "ci-mode=true"})
 elseif BuildMode == "release" then
     Log.Error("`release` mode is not currently enabled, as Darklua does not yet support string interpolation, which Wax uses heavily (https://github.com/seaofvoices/darklua/pull/94)")
     process.exit(1)
-    --HandleRun(`lune wax bundle input=default.project.json output=build/wax.luau minify=true extra-offset-lines={CodegenHeaderExtraLines} ci-mode=true`)
+    --HandleRun("lune", {"wax", "bundle", "input=default.project.json", "output=build/wax.luau", "minify=true", `extra-offset-lines={CodegenHeaderExtraLines}`, "ci-mode=true"})
 end
 
 Log.Info("(Adding CodegenHeader)")

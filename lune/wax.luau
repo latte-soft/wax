@@ -367,7 +367,7 @@ elseif Subcommand == "bundle" then
         RunIfVerbose(Log.Info, `Building from Rojo project file to "{ModelOutputFileName}"`)
 
         Run(
-            `rojo build -o {ModelOutputFileName} {Input}`,
+            "rojo", {"build", "-o", ModelOutputFileName, Input},
             false,
             BadExit -- Run() has an option to provide an err handler ourselves
         )
@@ -404,7 +404,7 @@ elseif Subcommand == "bundle" then
             ExtraDarkluaProcessArgs ..= `-c "{TempDarkluaConfigPath}" `
         end
 
-        Run(`darklua process {ExtraDarkluaProcessArgs}{TempOutputFilePath} {Output}`)
+        Run("darklua", {"process", TempOutputFilePath, Output, ExtraDarkluaProcessArgs})
         RunIfVerbose(Log.Info, `Wrote final minified output to "{Output}"`)
 
         RemoveFile(TempOutputFilePath)

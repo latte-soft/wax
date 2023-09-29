@@ -39,5 +39,5 @@ end
 
 local ModelCodegen = BundleModel({Script}, nil, false, StringUtils.LineCount(CodegenHeader) - 1)
 fs.writeFile(FilePath, ModelCodegen)
---Run(`darklua process {FilePath} {FilePath}`)
+--Run("darklua", {"process", FilePath, FilePath})
 fs.writeFile(FilePath, CodegenHeader .. fs.readFile(FilePath))

@@ -8,13 +8,13 @@ local CommandUtils = {}
 
 -- We'll check some required commands in a sec
 function CommandUtils.CommandExists(binary: string): boolean
-    -- Windows has a special command method other than "type $COMMAND" lol
-    local Command = if process.os == "windows" then
-            `where {binary}`
-        else
-            `type {binary}`
+    if process.os ~= "windows" then
+        -- Unix-compliance is simple!
+        return process.spawn("type", {binary}, {shell = true}).ok -- Return from status code directly
+    end
 
-    return Run(Command, true).ok -- Return from status code
+    -- I hate Windows
+    return true
 end
 
 function CommandUtils.CheckCommands(requiredCommands: {string})

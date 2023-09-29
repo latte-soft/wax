@@ -286,6 +286,8 @@ local function LoadScript(scriptRef)
     local Closure = ScriptClosures[scriptRef]
 
     local function FormatError(originalErrorMessage)
+        originalErrorMessage = tostring(originalErrorMessage)
+
         -- Check for vanilla/Roblox format
         local OriginalErrorLine, BaseErrorMessage = string_match(originalErrorMessage, "[^:]+:(%d+): (.+)")
 

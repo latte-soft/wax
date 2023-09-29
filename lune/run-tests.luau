@@ -39,8 +39,8 @@ for _, TestName in fs.readDir("tests") do
         pcall(fs.removeFile, OutputScriptPathMin)
     end
 
-    local BundleResult = Run(`lune wax bundle input={RojoProjectFilePath} output={OutputScriptPath} minify=false ci-mode=true verbose=false`)
-    local BundleResultMin = Run(`lune wax bundle input={RojoProjectFilePath} output={OutputScriptPathMin} minify=true ci-mode=true verbose=false`)
+    local BundleResult = Run("lune", {"wax", "bundle", `input={RojoProjectFilePath}`, `output={OutputScriptPath}`, "minify=false", "ci-mode=true", "verbose=false"})
+    local BundleResultMin = Run("lune", {"wax", "bundle", `input={RojoProjectFilePath}`, `output={OutputScriptPathMin}`, "minify=true", "ci-mode=true", "verbose=false"})
 
     local BadResult = if not BundleResult.ok then BundleResult elseif not BundleResultMin.ok then BundleResultMin else nil
     if BadResult and not fs.isFile(`tests/{TestName}/do-not-exit-for-build-errors`) then
@@ -58,11 +58,11 @@ print("\n++++++++++ STARTING TEST RUNNER PROCESS ++++++++++\n")
 for _, ScriptPath in ScriptFilesToTest do
     Log.Info(`Running script file "{StringUtils.FileNameFromPath(ScriptPath)}" for all targets..\n`)
 
-    Run(`lua5.1 {ScriptPath}`)
+    Run("lua5.1", {ScriptPath})
     print()
-    Run(`luau {ScriptPath}`)
+    Run("luau", {ScriptPath})
     print()
-    Run(`lune {ScriptPath}`)
+    Run("lune", {ScriptPath})
     print()
 
     print("--------------------------------------------------------------------------------\n")

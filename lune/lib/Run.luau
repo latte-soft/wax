@@ -4,16 +4,21 @@ local process = require("@lune/process")
 
 local Log = require("Log")
 
-local function Run(command: string, directRun: boolean?, errorHandler: (string?) -> ()?): process.SpawnResult
-    directRun = if directRun == nil then false else directRun
+local function Run(command: string, args: {string}?, directRun: boolean?, errorHandler: (string?) -> ()?): process.SpawnResult
+    local Args = args or {}
+    local DirectRun = if directRun == nil then false else directRun
 
-    if not directRun then
-        Log.Info(`> {command}`)
+    if not DirectRun then
+        if #Args == 0 then
+            Log.Info(`> {command}`)
+        else
+            Log.Info(`> {command} {table.concat(Args, " ")}`)
+        end
     end
 
-    local Result = process.spawn(command, {}, {
-        shell = true,
-        stdio = if directRun then "default" else "inherit",
+    local Result = process.spawn(command, args, {
+        shell = if process.os == "windows" then "powershell" else "/bin/sh",
+        stdio = if DirectRun then "default" else "inherit",
     })
 
     if not Result.ok and errorHandler then
