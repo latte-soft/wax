@@ -17,7 +17,7 @@ local function Run(command: string, args: {string}?, directRun: boolean?, errorH
     end
 
     local Result = process.spawn(command, args, {
-        shell = if process.os == "windows" then "powershell" else "/bin/sh",
+        shell = if process.os ~= "windows" then true else nil,
         stdio = if DirectRun then "default" else "inherit",
     })
 
