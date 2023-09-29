@@ -404,8 +404,12 @@ elseif Subcommand == "bundle" then
             ExtraDarkluaProcessArgs ..= `-c "{TempDarkluaConfigPath}" `
         end
 
-        Run("darklua", {"process", TempOutputFilePath, Output, ExtraDarkluaProcessArgs})
-        RunIfVerbose(Log.Info, `Wrote final minified output to "{Output}"`)
+        local RunArgs = {"process", ExtraDarkluaProcessArgs, TempOutputFilePath, Output}
+        if ExtraDarkluaProcessArgs == "" then
+            table.remove(RunArgs, 2)
+        end
+
+        Run("darklua", RunArgs)
 
         RemoveFile(TempOutputFilePath)
         if TempDarkluaConfigWasAdded then
