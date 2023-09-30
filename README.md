@@ -33,7 +33,7 @@ This is more of a successor to [Maui](https://github.com/latte-soft/maui), a sim
 *See [Usage](#🚀-usage) for more details on utilizing various features*
 
 * Bundle directly from a [Rojo project](https://rojo.space/docs/v7/project-format) file (`*.project.json`), or just a generic Roblox model file. (`*.rbxm` or `*.rbxmx`) *For working directly with Rojo project files, you **must** have the `rojo` command in your $PATH*
-* Created with **debugging in mind** from the start. *With output minification disabled*, even proper line info (matching to the original source files) can be shown in errors; for example, `[VirtualEnv].Script.OtherScript:1: intentional error`
+* Created with **debugging in mind** from the start. *With output minification disabled*, even proper line info (matching to the original source files) can be shown in errors; for example, `[WaxRuntime].Script.OtherScript:1: intentional error`
 * Built-in support for minifying bundled output directly with [Darklua](https://darklua.com) and either our default configuration (no extra steps), or your project's own `.darklua.json/json5` file for making personal tweaks.
 * Localized/flattened modified globals in closures, meaning `getfenv`/`setfenv` aren't used out-of-the-box to modify the script's environment - This also means that in Luau, `safeenv` runtime optimizations are maintained, and closures run 'natively' with no user modification!
 * Automated CI/deployment pipeline usage in mind, with the `ci-mode` flag; no user confirmation prompts, and exits with a `1` status code upon any errors
@@ -122,11 +122,11 @@ SUBCOMMANDS:
               available in your PATH environment variable), to an output path
 
       OPTIONS for `bundle`:
-      * input[=default.project.json]
+      * input[="default.project.json"]
             The input Roblox model (*.rbxm/*.rbxmx) or Rojo project (*.project.json) file
             path for Wax to bundle from
 
-      * output[={input-filename}.lua]
+      * output[="{input-filename}.lua"]
             The final output file path (must end in .lua or .luau) for the bundled script
 
       * minify[=false]
@@ -138,17 +138,17 @@ SUBCOMMANDS:
             CWD (your dir "position" in your terminal), it'll use the default configuration
             we provide (see `lune/lib/data/DefaultDarkluaConfig.luau`)
     
-      * env-name[="[VirtualEnv]"]
+      * env-name[="WaxRuntime"]
             The name of the "environment" of the bundled script. This is the "name" of
             the root object (like the `game` DataModel in Roblox) and displays in virtual
-            runtime errors (e.g. "[VirtualEnv].Script: Some error message")
+            runtime errors (e.g. "[WaxRuntime].Script:1: Some error message")
     
-      * darklua-config-path[=(.darklua.json/.darklua.json5)]
+      * darklua-config-path[=(".darklua.json", ".darklua.json5")]
             When `minify` is set as true, this path can be used to directly pass your own
             Darklua config file's path, instead of only checking for the default paths
             it looks for
 
-      * temp-dir-base[={output-dir}]
+      * temp-dir-base[="{output-dir}"]
             If you're providing a Rojo project file as input or minifying with Darklua,
             a temporary directory is created inside of this directory path, and is removed
             by the time Wax has completed processing

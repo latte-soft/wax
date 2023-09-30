@@ -14,7 +14,11 @@ local ObjectTree = ${ObjectTree}
 -- Line offsets for debugging (only included when minifyTables is false)
 local LineOffsets = ${LineOffsets}
 
--- Set up from data..
+-- Misc AOT variable imports
+local WaxVersion = "${Version}"
+local EnvName = "${EnvName}"
+
+-- ++++++++ RUNTIME IMPL BELOW ++++++++ --
 
 -- Localizing certain libraries and built-ins for runtime efficiency
 local math, string, task, setmetatable, error, newproxy, getmetatable, next, table, unpack, coroutine, script, type, require, pcall, getfenv, setfenv, rawget =
@@ -255,7 +259,7 @@ local function CreateRefFromObject(object, parent)
     return Ref
 end
 
-local RealObjectRoot = CreateRef("Folder", "${EnvName}")
+local RealObjectRoot = CreateRef("Folder", "[" .. EnvName .. "]")
 for _, Object in next, ObjectTree do
     CreateRefFromObject(Object, RealObjectRoot)
 end
@@ -372,7 +376,10 @@ function ImportGlobals(refId)
     })
 
     local Global_wax = table_freeze({
-        version = "${Version}",
+        -- From AOT variable imports
+        version = WaxVersion,
+        envname = EnvName,
+
         shared = WaxShared,
 
         -- "Real" globals instead of the env set ones

@@ -55,11 +55,11 @@ SUBCOMMANDS:
               available in your PATH environment variable), to an output path
 
       OPTIONS for `bundle`:
-      * input[=default.project.json]
+      * input[="default.project.json"]
             The input Roblox model (*.rbxm/*.rbxmx) or Rojo project (*.project.json) file
             path for Wax to bundle from
 
-      * output[={input-filename}.lua]
+      * output[="{input-filename}.lua"]
             The final output file path (must end in .lua or .luau) for the bundled script
 
       * minify[=false]
@@ -71,17 +71,17 @@ SUBCOMMANDS:
             CWD (your dir "position" in your terminal), it'll use the default configuration
             we provide (see `lune/lib/data/DefaultDarkluaConfig.luau`)
     
-      * env-name[="[VirtualEnv]"]
+      * env-name[="WaxRuntime"]
             The name of the "environment" of the bundled script. This is the "name" of
             the root object (like the `game` DataModel in Roblox) and displays in virtual
-            runtime errors (e.g. "[VirtualEnv].Script: Some error message")
+            runtime errors (e.g. "[WaxRuntime].Script:1: Some error message")
     
-      * darklua-config-path[=(.darklua.json/.darklua.json5)]
+      * darklua-config-path[=(".darklua.json", ".darklua.json5")]
             When `minify` is set as true, this path can be used to directly pass your own
             Darklua config file's path, instead of only checking for the default paths
             it looks for
 
-      * temp-dir-base[={output-dir}]
+      * temp-dir-base[="{output-dir}"]
             If you're providing a Rojo project file as input or minifying with Darklua,
             a temporary directory is created inside of this directory path, and is removed
             by the time Wax has completed processing
@@ -131,7 +131,7 @@ elseif Subcommand == "bundle" then
         ["input"] = {"string", "default.project.json"},
         ["output"] = {"string", nil},
         ["minify"] = {"boolean", false},
-        ["env-name"] = {"string", nil}, -- BundleModel() internally defaults to "[VirtualEnv]"
+        ["env-name"] = {"string", nil}, -- BundleModel() internally defaults to "WaxRuntime"
         ["darklua-config-path"] = {"string", nil},
         ["temp-dir-base"] = {"string", nil},
         ["extra-offset-lines"] = {"number", 0},
@@ -143,7 +143,7 @@ elseif Subcommand == "bundle" then
     local CIMode = Options["ci-mode"]
 
     local Minify = Options["minify"]
-    local EnvName = Options["env-name"] -- Internally defaults to "[VirtualEnv]"
+    local EnvName = Options["env-name"]
 
     local function RunIfVerbose(f, ...)
         if Verbose then

@@ -25,7 +25,7 @@ local ClassNameIdKeys = {
 -- Building codegen directly from model data (from .rbxm/.rbxmx) or a deserialized
 -- object using Lune's `roblox` library
 local function BundleModel(modelData: string | {roblox.Instance}, envName: string?, minifyCodegen: boolean?, extraLinesToOffset: number?, verbose: boolean?): (string, number)
-    local EnvName = envName or "[VirtualEnv]"
+    local EnvName = envName or "WaxRuntime"
     local MinifyCodegen = if minifyCodegen == nil then true else minifyCodegen
     local ExtraLinesToOffset = extraLinesToOffset or 0
     local Verbose = if verbose == nil then true else verbose
