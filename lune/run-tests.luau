@@ -23,6 +23,8 @@ for _, TestName in fs.readDir("tests") do
         continue
     end
 
+    local DoNotExitForErrors = fs.isFile(`tests/{TestName}/do-not-exit-for-errors`)
+
     local RojoProjectFilePath = `tests/{TestName}/default.project.json`
     local OutputScriptPath = `tests/{TestName}/{TestName}.wax.lua`
     local OutputScriptPathMin = `tests/{TestName}/{TestName}.min.wax.lua`
@@ -43,27 +45,41 @@ for _, TestName in fs.readDir("tests") do
     local BundleResultMin = Run("lune", {"wax", "bundle", `input={RojoProjectFilePath}`, `output={OutputScriptPathMin}`, "minify=true", "ci-mode=true", "verbose=false"})
 
     local BadResult = if not BundleResult.ok then BundleResult elseif not BundleResultMin.ok then BundleResultMin else nil
-    if BadResult and not fs.isFile(`tests/{TestName}/do-not-exit-for-build-errors`) then
+    if BadResult and not DoNotExitForErrors then
         print()
         Log.Error(`Test "{TestName}" failed to build (SEE COMMAND LOG ABOVE FOR DETAILS), aborting!`)
         process.exit(1)
     end
 
-    table.insert(ScriptFilesToTest, OutputScriptPath)
-    table.insert(ScriptFilesToTest, OutputScriptPathMin)
+    table.insert(ScriptFilesToTest, {OutputScriptPath, DoNotExitForErrors})
+    table.insert(ScriptFilesToTest, {OutputScriptPathMin, DoNotExitForErrors})
 end
 
 print("\n++++++++++ STARTING TEST RUNNER PROCESS ++++++++++\n")
 
-for _, ScriptPath in ScriptFilesToTest do
+for _, ScriptPathObject in ScriptFilesToTest do
+    local ScriptPath = ScriptPathObject[1]
+    local DoNotExitForErrors = ScriptPathObject[2]
+
     Log.Info(`Running script file "{StringUtils.FileNameFromPath(ScriptPath)}" for all targets..\n`)
 
-    Run("lua5.1", {ScriptPath})
-    print()
-    Run("luau", {ScriptPath})
-    print()
-    Run("lune", {ScriptPath})
-    print()
+    local function RunWithCommand(binary: string)
+        Run(binary, {ScriptPath}, false, function(message: string?)
+            if not DoNotExitForErrors then
+                if message then
+                    Log.Error(message)
+                end
+            
+                process.exit(1)
+            end
+        end)
+
+        print()
+    end
+
+    RunWithCommand("lua5.1")
+    RunWithCommand("luau")
+    RunWithCommand("lune")
 
     print("--------------------------------------------------------------------------------\n")
 end
