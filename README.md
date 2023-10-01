@@ -35,7 +35,7 @@ This is more of a successor to [Maui](https://github.com/latte-soft/maui), a sim
 * Bundle directly from a [Rojo project](https://rojo.space/docs/v7/project-format) file (`*.project.json`), or just a generic Roblox model file. (`*.rbxm` or `*.rbxmx`) *For working directly with Rojo project files, you **must** have the `rojo` command in your $PATH*
 * Created with **debugging in mind** from the start. *With output minification disabled*, even proper line info (matching to the original source files) can be shown in errors; for example, `[WaxRuntime].Script.OtherScript:1: intentional error`
 * Built-in support for minifying bundled output directly with [Darklua](https://darklua.com) and either our default configuration (no extra steps), or your project's own `.darklua.json/json5` file for making personal tweaks.
-* Localized/flattened modified globals in closures, meaning `getfenv`/`setfenv` aren't used out-of-the-box to modify the script's environment - This also means that in Luau, `safeenv` runtime optimizations are maintained, and closures run 'natively' with no user modification!
+* Localized/flattened modified globals in closures, meaning `getfenv`/`setfenv` aren't used to modify the script's environment - This also means that in Luau, `safeenv` runtime optimizations are maintained, and closures run 'natively' with no user modification!
 * Automated CI/deployment pipeline usage in mind, with the `ci-mode` flag; no user confirmation prompts, and exits with a `1` status code upon any errors
 * A 'virtual' Roblox-like DOM for scripts that can run completely outside of Roblox, while also allowing module imports (`require()`) with a simulated relative `script` global, or traditional filesystem path strings like in [Lune](https://github.com/filiptibell/lune) or the Lua/Luau CLI REPLs.
 
@@ -172,6 +172,7 @@ SUBCOMMANDS:
 ## Bundler Spec Details
 
 * Like a model on Roblox's [Developer Marketplace](https://create.roblox.com/marketplace/models), a ModuleScript under the model root named (exactly) "MainModule" will automatically run at init and pass its return through the **real** script
+* The real `getfenv`/`setfenv` functions are not overriden by global flattening whatsoever, so by using for example `getfenv(0)` it will return the actual root function environment of the script. *Just know that its behavior isn't modified whatsoever for virtual closures!*
 * Instance `ClassName`s that will bundle:
   * `Folder`
   * `Script`
@@ -187,6 +188,50 @@ SUBCOMMANDS:
   * `Instance:GetChildren(): {Instance}`
   * `Instance:FindFirstChild(name: string): Instance?` (The 2nd argument from Roblox, "`recursive`" is omitted)
   * `Instance:GetFullName(): string`
+
+## Runtime API Reference
+
+**All virtual closures have a special `wax` global for accessing AOT Wax build info, an isolated `shared` table, and 'real' globals Wax replaces.**
+
+* `wax.version`
+
+The version of Wax the current script was bundled with.
+
+```lua
+wax.version: string
+```
+
+* `wax.envname`
+
+The string provided in the `env-name` option at build-time. ("`WaxRuntime`" by default)
+
+```lua
+wax.envname: string
+```
+
+* `wax.shared`
+
+A table shared across all virtual closures in a bundled project, similar to the real `_G`/`shared` globals.
+
+```lua
+wax.shared: {[any]: any}
+```
+
+* `wax.script`
+
+The real `script` global of the current script, (for with Roblox etc) as opposed to the virtual script ref override by Wax. If there isn't a real `script` global above Wax's environment anyway, this will be `nil`.
+
+```lua
+wax.script: LuaSourceContainer?
+```
+
+* `wax.require()`
+
+The real `require()` function given by your Lua runtime as opposed to Wax's virtual override. (Lua, Luau (vanilla repl), Roblox Engine, Lune etc)
+
+```lua
+wax.require(...: any): ...any
+```
 
 ## 🏛️ License
 
