@@ -21,7 +21,8 @@ local function ParseArgs(args: {string}, optionsTable: OptionsInput, usageMessag
         local Option, Value = string.match(Arg, "([%w%-_]+)=(.+)")
 
         if not Option then
-            continue
+            Log.Error(`Command argument given, "{Arg}" not in the proper \`option=value\` format, aborting..`)
+            ErrorExit()
         end
 
         local OptionDetails = optionsTable[Option]

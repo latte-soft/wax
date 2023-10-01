@@ -21,17 +21,14 @@ local EnvName = "${EnvName}"
 -- ++++++++ RUNTIME IMPL BELOW ++++++++ --
 
 -- Localizing certain libraries and built-ins for runtime efficiency
-local math, string, task, setmetatable, error, newproxy, getmetatable, next, table, unpack, coroutine, script, type, require, pcall, getfenv, setfenv, rawget =
-      math, string, task, setmetatable, error, newproxy, getmetatable, next, table, unpack, coroutine, script, type, require, pcall, getfenv, setfenv, rawget
+local math, string, task, setmetatable, error, newproxy, getmetatable, next, table, unpack, coroutine, script, type, require, pcall, rawget, tostring, tonumber, _VERSION =
+      math, string, task, setmetatable, error, newproxy, getmetatable, next, table, unpack, coroutine, script, type, require, pcall, rawget, tostring, tonumber, _VERSION
 
 local table_insert = table.insert
 local table_remove = table.remove
--- lol
-local table_freeze = table.freeze or function(t) return t end
+local table_freeze = table.freeze or function(t) return t end -- lol
 
 local coroutine_wrap = coroutine.wrap
-
-local math_huge = math.huge
 
 local string_sub = string.sub
 local string_match = string.match
@@ -73,7 +70,7 @@ local ScriptsToRun = {}
 local SharedEnvironment = {}
 
 -- We're creating 'fake' instance refs soley for traversal of the DOM for require() compatibility
--- It's meant to be as lazy as possible lol
+-- It's meant to be as lazy as possible
 local RefChildren = {} -- [Ref] = {ChildrenRef, ...}
 
 local function TryToRemoveRealErrorDebugInfo(errorMessage)
@@ -81,34 +78,9 @@ local function TryToRemoveRealErrorDebugInfo(errorMessage)
 end
 
 -- Implemented instance methods
-local InstanceMethods = {
-    GetChildren = function(self)
-        local Children = RefChildren[self]
-        local ReturnArray = {}
-
-        for Child in next, Children do
-            table_insert(ReturnArray, Child)
-        end
-
-        return ReturnArray
-    end,
-
-    -- Not implementing `recursive` arg, as it isn't needed for us here
-    FindFirstChild = function(self, name)
-        if not name then
-            error("Argument 1 missing or nil", 3)
-        end
-
-        for Child in next, RefChildren[self] do
-            if Child.Name == name then
-                return Child
-            end
-        end
-
-        return
-    end,
-
-    GetFullName = function(self)
+local InstanceMethods
+InstanceMethods = {
+    GetFullName = { {}, function(self)
         local Path = self.Name
         local ObjectPointer = self.Parent
 
@@ -120,15 +92,91 @@ local InstanceMethods = {
         end
 
         return Path
-    end,
+    end},
+
+    GetChildren = { {}, function(self)
+        local ReturnArray = {}
+
+        for Child in next, RefChildren[self] do
+            table_insert(ReturnArray, Child)
+        end
+
+        return ReturnArray
+    end},
+
+    GetDescendants = { {}, function(self)
+        local ReturnArray = {}
+
+        for Child in next, RefChildren[self] do
+            table_insert(ReturnArray, Child)
+
+            for _, Descendant in next, InstanceMethods.GetDescendants[2](Child) do
+                table_insert(ReturnArray, Descendant)
+            end
+        end
+
+        return ReturnArray
+    end},
+
+    FindFirstChild = { {"string", "boolean?"}, function(self, name, recursive)
+        local Children = RefChildren[self]
+
+        for Child in next, Children do
+            if Child.Name == name then
+                return Child
+            end
+        end
+
+        if recursive then
+            for Child in next, Children do
+                -- Yeah, Roblox follows this behavior- instead of searching the entire base of a
+                -- ref first, the engine uses a direct recursive call
+                return InstanceMethods.FindFirstChild[2](Child, name, recursive)
+            end
+        end
+    end},
+
+    FindFirstAncestor = { {"string"}, function(self, name)
+        local RefPointer = self.Parent
+        while RefPointer do
+            if RefPointer.Name == name then
+                return RefPointer
+            end
+
+            RefPointer = RefPointer.Parent
+        end
+    end},
+
+    -- Just to implement for traversal usage
+    WaitForChild = { {"string", "number?"}, function(self, name)
+        return InstanceMethods.FindFirstChild[2](self, name)
+    end},
 }
 
 -- "Proxies" to instance methods, with err checks etc
 local InstanceMethodProxies = {}
-for MethodName, Method in next, InstanceMethods do
+for MethodName, MethodObject in next, InstanceMethods do
+    local Types = MethodObject[1]
+    local Method = MethodObject[2]
+
     InstanceMethodProxies[MethodName] = function(self, ...)
         if not RefChildren[self] then
             error("Expected ':' not '.' calling member function " .. MethodName, 2)
+        end
+
+        local Args = {...}
+        for ArgIndex, TypeInfo in next, Types do
+            local RealArg = Args[ArgIndex]
+            local RealArgType = type(RealArg)
+            local ExpectedType, IsOptional = string_match(TypeInfo, "^([^%?]+)(%??)")
+
+            if RealArg == nil and not IsOptional then
+                error("Argument " .. RealArg .. " missing or nil", 3)
+            end
+
+            if ExpectedType ~= "any" and RealArgType ~= ExpectedType and not (RealArgType == "nil" and IsOptional) then
+                error("Argument 2 expects type \"" .. ExpectedType .. "\", got \"" .. RealArgType .. "\"", 2)
+            end
         end
 
         return Method(self, ...)
@@ -279,7 +327,6 @@ end
 
 local function LoadScript(scriptRef)
     local ScriptClassName = scriptRef.ClassName
-    local VirtualFullName = scriptRef:GetFullName()
 
     -- First we'll check for a cached module value (packed into a tbl)
     local StoredModuleValue = StoredModuleValues[scriptRef]
@@ -292,30 +339,26 @@ local function LoadScript(scriptRef)
     local function FormatError(originalErrorMessage)
         originalErrorMessage = tostring(originalErrorMessage)
 
+        local VirtualFullName = scriptRef:GetFullName()
+
         -- Check for vanilla/Roblox format
         local OriginalErrorLine, BaseErrorMessage = string_match(originalErrorMessage, "[^:]+:(%d+): (.+)")
 
-        if not OriginalErrorLine then -- or BaseErrorMessage
-            -- Oh well..
-            return VirtualFullName .. ":*: " .. originalErrorMessage
+        if not OriginalErrorLine or not LineOffsets then
+            return VirtualFullName .. ":*: " .. (BaseErrorMessage or originalErrorMessage)
         end
 
         OriginalErrorLine = tonumber(OriginalErrorLine)
 
-        if LineOffsets then
-            local RefId = ScriptClosureRefIds[scriptRef]
-            local LineOffset = LineOffsets[RefId]
+        local RefId = ScriptClosureRefIds[scriptRef]
+        local LineOffset = LineOffsets[RefId]
 
-            local RealErrorLine = OriginalErrorLine - LineOffset + 1
-            if RealErrorLine < 0 then
-                RealErrorLine = "*"
-            end
-
-            return VirtualFullName .. ":" .. RealErrorLine .. ": " .. BaseErrorMessage
-        else
-            -- Just the BaseErrorMessage
-            return VirtualFullName .. ":*: " .. BaseErrorMessage
+        local RealErrorLine = OriginalErrorLine - LineOffset + 1
+        if RealErrorLine < 0 then
+            RealErrorLine = "?"
         end
+
+        return VirtualFullName .. ":" .. RealErrorLine .. ": " .. BaseErrorMessage
     end
 
     -- If it's a BaseScript, we'll just run it directly!
@@ -339,7 +382,7 @@ local function LoadScript(scriptRef)
 end
 
 -- We'll assign the actual func from the top of this output for flattening user globals at runtime
--- Returns (in a tuple order): wax, script, require, getfenv, setfenv
+-- Returns (in a tuple order): wax, script, require
 function ImportGlobals(refId)
     local ScriptRef = RefBindings[refId]
 
@@ -347,13 +390,6 @@ function ImportGlobals(refId)
     if not Closure then
         return
     end
-
-    -- This will be set right after the other global funcs, it's for handling proper behavior when
-    -- getfenv/setfenv is called and safeenv needs to be disabled
-    local EnvHasBeenSet = false
-    local RealEnv
-    local VirtualEnv
-    local SetEnv
 
     local function RealCall(f, ...)
         local PCallReturn = {pcall(f, ...)}
@@ -367,13 +403,18 @@ function ImportGlobals(refId)
     end
 
     -- `wax.shared` index
-    local WaxShared = setmetatable({}, {
+    local WaxShared = table_freeze(setmetatable({}, {
         __index = SharedEnvironment,
         __newindex = function(_, index, value)
             SharedEnvironment[index] = value
         end,
-        __metatable = false,
-    })
+        __len = function()
+            return #SharedEnvironment
+        end,
+        __iter = function()
+            return next, SharedEnvironment
+        end,
+    }))
 
     local Global_wax = table_freeze({
         -- From AOT variable imports
@@ -385,16 +426,18 @@ function ImportGlobals(refId)
         -- "Real" globals instead of the env set ones
         script = script,
         require = require,
-        getfenv = getfenv,
-        setfenv = setfenv,
     })
 
     local Global_script = ScriptRef
 
     local function Global_require(module, ...)
-        if type(module) == "userdata" and RefChildren[module] and module.ClassName == "ModuleScript" then
+        local ModuleArgType = type(module)
+
+        if ModuleArgType == "userdata" and RefChildren[module] and module.ClassName == "ModuleScript" then
             return LoadScript(module)
-        elseif type(module) == "string" and string_sub(module, 1, 1) ~= "@" then
+        elseif ModuleArgType == "string" and string_sub(module, 1, 1) ~= "@" then
+            -- The control flow on this SUCKS due to needing to maintain Lua 5.1x+ syntax 
+
             if #module == 0 then
                 error("Attempted to call require with empty string", 2)
             end
@@ -455,86 +498,8 @@ function ImportGlobals(refId)
         return RealCall(require, module, ...)
     end
 
-    -- Calling these flattened getfenv/setfenv functions will disable safeenv for the WHOLE SCRIPT
-    local function Global_getfenv(stackLevel, ...)
-        -- Now we have to set the env for the other variables used here to be valid
-        if not EnvHasBeenSet then
-            SetEnv()
-        end
-
-        if type(stackLevel) == "number" and stackLevel >= 0 then
-            if stackLevel == 0 then
-                return VirtualEnv
-            else
-                -- Offset by 1 for the actual env
-                stackLevel = stackLevel + 1
-
-                local GetOk, FunctionEnv = pcall(getfenv, stackLevel)
-                if GetOk and FunctionEnv == RealEnv then
-                    return VirtualEnv
-                end
-            end
-        end
-
-        return RealCall(getfenv, stackLevel, ...)
-    end
-
-    local function Global_setfenv(stackLevel, newEnv, ...)
-        if not EnvHasBeenSet then
-            SetEnv()
-        end
-
-        if type(stackLevel) == "number" and stackLevel >= 0 then
-            if stackLevel == 0 then
-                return setfenv(VirtualEnv, newEnv)
-            else
-                stackLevel = stackLevel + 1
-
-                local GetOk, FunctionEnv = pcall(getfenv, stackLevel)
-                if GetOk and FunctionEnv == RealEnv then
-                    return setfenv(VirtualEnv, newEnv)
-                end
-            end
-        end
-
-        return RealCall(setfenv, stackLevel, newEnv, ...)
-    end
-
-    -- From earlier, will ONLY be set if needed
-    function SetEnv()
-        RealEnv = getfenv(0)
-
-        local GlobalEnvOverride = {
-            ["wax"] = Global_wax,
-            ["script"] = Global_script,
-            ["require"] = Global_require,
-            ["getfenv"] = Global_getfenv,
-            ["setfenv"] = Global_setfenv,
-        }
-
-        VirtualEnv = setmetatable({}, {
-            __index = function(_, index)
-                local IndexInVirtualEnv = rawget(VirtualEnv, index)
-                if IndexInVirtualEnv ~= nil then
-                    return IndexInVirtualEnv
-                end
-
-                local IndexInGlobalEnvOverride = GlobalEnvOverride[index]
-                if IndexInGlobalEnvOverride ~= nil then
-                    return IndexInGlobalEnvOverride
-                end
-
-                return RealEnv[index]
-            end
-        })
-
-        setfenv(Closure, VirtualEnv)
-
-        EnvHasBeenSet = true
-    end
-
     -- Now, return flattened globals ready for direct runtime exec
-    return Global_wax, Global_script, Global_require, Global_getfenv, Global_setfenv
+    return Global_wax, Global_script, Global_require
 end
 
 for _, ScriptRef in next, ScriptsToRun do

@@ -105,6 +105,12 @@ SUBCOMMANDS:
 -- Flush out any other previous ANSI nonsense
 stdio.write(stdio.color("reset") .. stdio.style("reset"))
 
+local function EncodeShellData(shellData: string): string
+    return if process.os == "windows" then
+        shellData -- I swear, Windows makes everything worse
+    else '"' .. StringUtils.SerializeStringData(shellData) .. '"'
+end
+
 local CommandArgs = table.clone(process.args)
 local Subcommand = table.remove(CommandArgs, 1)
 
@@ -126,7 +132,7 @@ elseif Subcommand == "bundle" then
     -- “An idiot admires complexity, a genius admires simplicity" - Terry A Davis
 
     -- Parse and init default CLI options
-    local Options = ParseArgs(process.args, {
+    local Options = ParseArgs(CommandArgs, {
         -- Option = {Type, DefaultValue, IsRequired?}
         ["input"] = {"string", "default.project.json"},
         ["output"] = {"string", nil},
@@ -367,7 +373,12 @@ elseif Subcommand == "bundle" then
         RunIfVerbose(Log.Info, `Building from Rojo project file to "{ModelOutputFileName}"`)
 
         Run(
-            "rojo", {"build", "-o", ModelOutputFileName, Input},
+            "rojo", {
+                "build",
+                "-o",
+                EncodeShellData(ModelOutputFileName),
+                EncodeShellData(Input),
+            },
             false,
             BadExit -- Run() has an option to provide an err handler ourselves
         )
@@ -389,27 +400,28 @@ elseif Subcommand == "bundle" then
 
         RunIfVerbose(Log.Info, "Starting minification process with Darklua")
 
-        local ExtraDarkluaProcessArgs = ""
+        local ExtraDarkluaProcessArgs = {}
 
         -- Check for possible default Darklua cfg files under CWD
         local TempDarkluaConfigPath = TempDir .. ".darklua.json"
         local TempDarkluaConfigWasAdded = false
 
         if DarkluaConfigPath then
-            ExtraDarkluaProcessArgs ..= `-c "{DarkluaConfigPath}" `
+            table.insert(ExtraDarkluaProcessArgs, `-c {EncodeShellData(DarkluaConfigPath)}`)
         elseif not fs.isFile(".darklua.json") and not fs.isFile(".darklua.json5") then
             RunIfVerbose(Log.Info, `No default Darklua config file found in CWD; creating our default config at "{TempDarkluaConfigPath}"`)
             WriteFile(TempDarkluaConfigPath, DefaultDarkluaConfig)
             TempDarkluaConfigWasAdded = true
-            ExtraDarkluaProcessArgs ..= `-c "{TempDarkluaConfigPath}" `
+
+            table.insert(ExtraDarkluaProcessArgs, `-c {EncodeShellData(TempDarkluaConfigPath)}`)
         end
 
-        local RunArgs = {"process", ExtraDarkluaProcessArgs, TempOutputFilePath, Output}
-        if ExtraDarkluaProcessArgs == "" then
-            table.remove(RunArgs, 2)
-        end
-
-        Run("darklua", RunArgs)
+        Run("darklua", {
+            "process",
+            EncodeShellData(TempOutputFilePath),
+            EncodeShellData(Output),
+            unpack(ExtraDarkluaProcessArgs),
+        })
 
         RemoveFile(TempOutputFilePath)
         if TempDarkluaConfigWasAdded then
