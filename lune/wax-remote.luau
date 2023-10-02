@@ -4,7 +4,7 @@
 ]]
 
 -- You set the following string to "latest" (case insensitive), or any version tag
--- on Wax's releases page (e.g. "0.3.1")
+-- on Wax's releases page (e.g. "0.3.2")
 local WaxVersion = "latest"
 
 -------------------------------------------------------------------------------
