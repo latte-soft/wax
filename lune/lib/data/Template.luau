@@ -446,7 +446,7 @@ function ImportGlobals(refId)
 
             return LoadScript(module)
         elseif ModuleArgType == "string" and string_sub(module, 1, 1) ~= "@" then
-            -- The control flow on this SUCKS due to needing to maintain Lua 5.1x+ syntax 
+            -- The control flow on this SUCKS
 
             if #module == 0 then
                 error("Attempted to call require with empty string", 2)
