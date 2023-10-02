@@ -21,8 +21,8 @@ local EnvName = "${EnvName}"
 -- ++++++++ RUNTIME IMPL BELOW ++++++++ --
 
 -- Localizing certain libraries and built-ins for runtime efficiency
-local math, string, task, setmetatable, error, newproxy, getmetatable, next, table, unpack, coroutine, script, type, require, pcall, rawget, tostring, tonumber, _VERSION =
-      math, string, task, setmetatable, error, newproxy, getmetatable, next, table, unpack, coroutine, script, type, require, pcall, rawget, tostring, tonumber, _VERSION
+local string, task, setmetatable, error, newproxy, getmetatable, next, table, unpack, coroutine, script, type, require, pcall, tostring, tonumber, _VERSION =
+      string, task, setmetatable, error, newproxy, getmetatable, next, table, unpack, coroutine, script, type, require, pcall, tostring, tonumber, _VERSION
 
 local table_insert = table.insert
 local table_remove = table.remove
@@ -58,10 +58,6 @@ local ClassNameIdBindings = {
     [4] = "LocalScript",
     [5] = "StringValue",
 }
-
-local function TryToRemoveRealErrorDebugInfo(errorMessage)
-    return string_match(errorMessage, "[^:]+:[^:]+: (.+)") or errorMessage
-end
 
 local RefBindings = {} -- [RefId] = RealObject
 
@@ -390,7 +386,6 @@ end
 -- Returns (in a tuple order): wax, script, require
 function ImportGlobals(refId)
     local ScriptRef = RefBindings[refId]
-    local Closure = ScriptClosures[ScriptRef]
 
     local function RealCall(f, ...)
         local PCallReturn = {pcall(f, ...)}
