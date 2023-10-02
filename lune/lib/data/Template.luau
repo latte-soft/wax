@@ -78,8 +78,7 @@ local SharedEnvironment = {}
 local RefChildren = {} -- [Ref] = {ChildrenRef, ...}
 
 -- Implemented instance methods
-local InstanceMethods
-InstanceMethods = {
+local InstanceMethods = {
     GetFullName = { {}, function(self)
         local Path = self.Name
         local ObjectPointer = self.Parent
@@ -110,7 +109,7 @@ InstanceMethods = {
         for Child in next, RefChildren[self] do
             table_insert(ReturnArray, Child)
 
-            for _, Descendant in next, InstanceMethods.GetDescendants[2](Child) do
+            for _, Descendant in next, Child:GetDescendants() do
                 table_insert(ReturnArray, Descendant)
             end
         end
@@ -131,7 +130,7 @@ InstanceMethods = {
             for Child in next, Children do
                 -- Yeah, Roblox follows this behavior- instead of searching the entire base of a
                 -- ref first, the engine uses a direct recursive call
-                return InstanceMethods.FindFirstChild[2](Child, name, recursive)
+                return Child:FindFirstChild(name, recursive)
             end
         end
     end},
@@ -149,7 +148,7 @@ InstanceMethods = {
 
     -- Just to implement for traversal usage
     WaitForChild = { {"string", "number?"}, function(self, name)
-        return InstanceMethods.FindFirstChild[2](self, name)
+        return self:FindFirstChild(name)
     end},
 }
 
@@ -159,16 +158,22 @@ for MethodName, MethodObject in next, InstanceMethods do
     local Types = MethodObject[1]
     local Method = MethodObject[2]
 
+    local EvaluatedTypeInfo = {}
+    for ArgIndex, TypeInfo in next, Types do
+        local ExpectedType, IsOptional = string_match(TypeInfo, "^([^%?]+)(%??)")
+        EvaluatedTypeInfo[ArgIndex] = {ExpectedType, IsOptional}
+    end
+
     InstanceMethodProxies[MethodName] = function(self, ...)
         if not RefChildren[self] then
             error("Expected ':' not '.' calling member function " .. MethodName, 2)
         end
 
         local Args = {...}
-        for ArgIndex, TypeInfo in next, Types do
+        for ArgIndex, TypeInfo in next, EvaluatedTypeInfo do
             local RealArg = Args[ArgIndex]
             local RealArgType = type(RealArg)
-            local ExpectedType, IsOptional = string_match(TypeInfo, "^([^%?]+)(%??)")
+            local ExpectedType, IsOptional = TypeInfo[1], TypeInfo[2]
 
             if RealArg == nil and not IsOptional then
                 error("Argument " .. RealArg .. " missing or nil", 3)
