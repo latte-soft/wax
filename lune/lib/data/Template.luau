@@ -175,7 +175,7 @@ for MethodName, MethodObject in next, InstanceMethods do
             end
 
             if ExpectedType ~= "any" and RealArgType ~= ExpectedType and not (RealArgType == "nil" and IsOptional) then
-                error("Argument 2 expects type \"" .. ExpectedType .. "\", got \"" .. RealArgType .. "\"", 2)
+                error("Argument " .. ArgIndex .. " expects type \"" .. ExpectedType .. "\", got \"" .. RealArgType .. "\"", 2)
             end
         end
 
