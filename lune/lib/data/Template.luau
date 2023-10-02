@@ -59,6 +59,10 @@ local ClassNameIdBindings = {
     [5] = "StringValue",
 }
 
+local function TryToRemoveRealErrorDebugInfo(errorMessage)
+    return string_match(errorMessage, "[^:]+:[^:]+: (.+)") or errorMessage
+end
+
 local RefBindings = {} -- [RefId] = RealObject
 
 local ScriptClosures = {}
@@ -72,10 +76,6 @@ local SharedEnvironment = {}
 -- We're creating 'fake' instance refs soley for traversal of the DOM for require() compatibility
 -- It's meant to be as lazy as possible
 local RefChildren = {} -- [Ref] = {ChildrenRef, ...}
-
-local function TryToRemoveRealErrorDebugInfo(errorMessage)
-    return string_match(errorMessage, "[^:]+:[^:]+: (.+)") or errorMessage
-end
 
 -- Implemented instance methods
 local InstanceMethods
@@ -385,11 +385,7 @@ end
 -- Returns (in a tuple order): wax, script, require
 function ImportGlobals(refId)
     local ScriptRef = RefBindings[refId]
-
     local Closure = ScriptClosures[ScriptRef]
-    if not Closure then
-        return
-    end
 
     local function RealCall(f, ...)
         local PCallReturn = {pcall(f, ...)}
@@ -433,7 +429,16 @@ function ImportGlobals(refId)
     local function Global_require(module, ...)
         local ModuleArgType = type(module)
 
-        if ModuleArgType == "userdata" and RefChildren[module] and module.ClassName == "ModuleScript" then
+        local ErrorNonModuleScript = "Attempted to call require with a non-ModuleScript"
+        local ErrorSelfRequire = "Attempted to call require with self"
+
+        if ModuleArgType == "userdata" and RefChildren[module]  then
+            if module.ClassName ~= "ModuleScript" then
+                error(ErrorNonModuleScript, 2)
+            elseif module == ScriptRef then
+                error(ErrorSelfRequire, 2)
+            end
+
             return LoadScript(module)
         elseif ModuleArgType == "string" and string_sub(module, 1, 1) ~= "@" then
             -- The control flow on this SUCKS due to needing to maintain Lua 5.1x+ syntax 
@@ -450,6 +455,7 @@ function ImportGlobals(refId)
                 module = string_sub(module, 3)
             end
 
+            local PreviousPathMatch
             for PathMatch in string_gmatch(module, "([^/]*)/?") do
                 local RealIndex = PathMatch
                 if PathMatch == ".." then
@@ -457,39 +463,30 @@ function ImportGlobals(refId)
                 end
 
                 -- Don't advance dir if it's just another "/" either
-                if RealIndex ~= "" and PathMatch ~= "init" then
-                    local IndexSuccess, RefOrError = pcall(function()
-                        return CurrentRefPointer[RealIndex]
-                    end)
-
-                    if IndexSuccess then
-                        CurrentRefPointer = RefOrError
-                    else -- RefOrError is an index error msg
-                        local OriginalErrorFormatted = TryToRemoveRealErrorDebugInfo(RefOrError)
-
-                        -- We'll try the parent ref if it exists, but if all else, throw the original exception
+                if RealIndex ~= "" then
+                    local ResultRef = CurrentRefPointer:FindFirstChild(RealIndex)
+                    if not ResultRef then
                         local CurrentRefParent = CurrentRefPointer.Parent
                         if CurrentRefParent then
-                            local ParentIndexSuccess, ParentIndexRef = pcall(function()
-                                return CurrentRefParent[RealIndex]
-                            end)
-
-                            if ParentIndexSuccess then
-                                CurrentRefPointer = ParentIndexRef
-                            else
-                                error(OriginalErrorFormatted, 2)
-                            end
-                        else
-                            error(OriginalErrorFormatted, 2)
+                            ResultRef = CurrentRefParent:FindFirstChild(RealIndex)
                         end
                     end
+
+                    if ResultRef then
+                        CurrentRefPointer = ResultRef
+                    elseif PathMatch ~= PreviousPathMatch and PathMatch ~= "init" and PathMatch ~= "init.server" and PathMatch ~= "init.client" then
+                        error("Virtual script path \"" .. module .. "\" not found", 2)
+                    end
                 end
+
+                -- For possible checks next cycle
+                PreviousPathMatch = PathMatch
             end
 
             if CurrentRefPointer.ClassName ~= "ModuleScript" then
-                error("Attempted to call require with a non-ModuleScript", 2)
+                error(ErrorNonModuleScript, 2)
             elseif CurrentRefPointer == ScriptRef then
-                error("Attempted to call require with self (You cannot require 'yourself')", 2)
+                error(ErrorSelfRequire, 2)
             end
 
             return LoadScript(CurrentRefPointer)
