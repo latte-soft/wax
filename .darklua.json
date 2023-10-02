@@ -1,7 +1,7 @@
 {
     "generator": {
         "name": "dense",
-        "column_span": 100
+        "column_span": 120
     },
     "rules": [
         "convert_index_to_field",
