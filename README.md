@@ -169,7 +169,7 @@ SUBCOMMANDS:
             "Verbose" (detailed) output logging from CLI/bundler
 ```
 
-## Bundler Spec Details
+## Runtime Spec Details
 
 * Like a model on Roblox's [Developer Marketplace](https://create.roblox.com/marketplace/models), a ModuleScript under the model root named (exactly) "MainModule" will automatically run at init and pass its return through the **real** script
 * The real `getfenv`/`setfenv` functions are not overriden by global flattening whatsoever, so by using for example `getfenv(0)` it will return the actual root function environment of the script. *Just know that its behavior isn't modified whatsoever for virtual closures!*
@@ -185,9 +185,12 @@ SUBCOMMANDS:
   * `Instance.Parent: Instance?`
   * `StringValue.Value: string`
 * Implemented Instance 'methods':
-  * `Instance:GetChildren(): {Instance}`
-  * `Instance:FindFirstChild(name: string): Instance?` (The 2nd argument from Roblox, "`recursive`" is omitted)
   * `Instance:GetFullName(): string`
+  * `Instance:GetChildren(): {Instance}`
+  * `Instance:GetDescendants(): {Instance}`
+  * `Instance:FindFirstChild(name: string, recursive: boolean?): Instance?`
+  * `Instance:FindFirstAncestor(name: string): Instance?`
+  * `Instance:WaitForChild(name: string, timeOut: number?)` *The actual behavior of the virtual `WaitForChild` impl is identical to `FindFirstChild`, but it needs to be implemented due to many codebases using it for relative module `require()` paths*
 
 ## Runtime API Reference
 
