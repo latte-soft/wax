@@ -236,6 +236,29 @@ The real `require()` function given by your Lua runtime as opposed to Wax's virt
 wax.require(...: any): ...any
 ```
 
+## Build from Source
+
+1. Clone the repository with `git`:
+
+```
+git clone https://github.com/latte-soft/wax.git
+cd wax
+```
+
+2. With [Aftman](https://github.com/LPGhatguy/aftman) installed and configured:
+
+*Accept any new tools for installation from the `y/n` prompts, or append `--no-trust-check` to the following command*
+
+```
+aftman install
+```
+
+3. Build with `lune`:
+
+```
+lune make
+```
+
 ## 🏛️ License
 
 *See file: [LICENSE](LICENSE)*
