@@ -505,11 +505,18 @@ end
 
 -- If there's a "MainModule" top-level modulescript, we'll return it from the output's closure directly
 do
-    local MainModule 
-    for _, Ref in next, RealObjectRoot:GetChildren() do
-        if Ref.ClassName == "ModuleScript" and Ref.Name == "MainModule" then
-            MainModule = Ref
-            break
+    local MainModule
+    local RealObjectRootChildren = RealObjectRoot:GetChildren()
+
+    -- Doesn't need to be named "MainModule" if there's just 1 root obj and it's a ModuleScript
+    if #RealObjectRootChildren == 1 and RealObjectRootChildren[1].ClassName == "ModuleScript" then
+        MainModule = RealObjectRootChildren[1]
+    else
+        for _, Ref in next, RealObjectRootChildren do
+            if Ref.ClassName == "ModuleScript" and Ref.Name == "MainModule" then
+                MainModule = Ref
+                break
+            end
         end
     end
 
