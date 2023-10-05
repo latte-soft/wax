@@ -197,13 +197,14 @@ local function CreateRef(className, name, parent)
     local function InvalidMember(member)
         error(member .. " is not a valid (virtual) member of " .. className .. " \"" .. name .. "\"", 3)
     end
-
     local function ReadOnlyProperty(property)
         error("Unable to assign (virtual) property " .. property .. ". Property is read only", 3)
     end
 
     local Ref = newproxy(true)
     local RefMetatable = getmetatable(Ref)
+
+    RefMetatable.__metatable = false
 
     RefMetatable.__index = function(_, index)
         if index == "ClassName" then -- First check "properties"
