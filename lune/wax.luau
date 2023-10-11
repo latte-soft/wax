@@ -6,15 +6,23 @@ if string.sub(_VERSION, 1, 4) ~= "Lune" then
 end
 
 do
-    local Major, Minor, Patch = string.match(_VERSION, "Lune (%d).(%d).(%d)")
+    -- Minimum "recommended" ver
+    local MajorRec,
+          MinorRec,
+          PatchRec = 0, 7, 8
+
+    local Major,
+          Minor,
+          Patch = string.match(_VERSION, "Lune (%d).(%d).(%d)")
+
+    Major, Minor, Patch = tonumber(Major), tonumber(Minor), tonumber(Patch)
+
     if not Major then
-        print(`! Can't parse Lune's version on the assumed format from "{_VERSION}", continuing anyway..`)
+        print(`! Can't parse Lune's version on the assumed format from "{_VERSION}", continuing anyway..\n`)
     else
         _G.LuneVersion = `{Major}.{Minor}.{Patch}`
-        local ConcatVersion = tonumber(`{Major}.{Minor}{Patch}`)
-        if ConcatVersion < 0.77 then
-            print(`!! Lune version "{_G.LuneVersion}" detected, Wax currently requires Lune 0.7.7 or higher, exitting..`)
-            return
+        if Major < MajorRec or Minor < MinorRec or Patch < PatchRec then
+            print(`! Lune version "{_G.LuneVersion}" detected, Wax currently recommends Lune {MajorRec}.{MinorRec}.{PatchRec} or higher, continuing anyway..\n`)
         end
     end
 end
