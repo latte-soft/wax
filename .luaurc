@@ -1,4 +1,3 @@
 {
-    "languageMode": "nonstrict",
-    "globals": ["wax"]
+    "languageMode": "nonstrict"
 }
