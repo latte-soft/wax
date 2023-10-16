@@ -2,8 +2,6 @@
 
 local process = require("@lune/process")
 
-local Run = require("Run")
-
 local CommandUtils = {}
 
 -- We'll check some required commands in a sec
