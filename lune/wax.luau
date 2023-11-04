@@ -13,7 +13,7 @@ do
 
     local Major,
           Minor,
-          Patch = string.match(_VERSION, "Lune (%d).(%d).(%d)")
+          Patch = string.match(_VERSION, "Lune (%d+).(%d+).(%d+)")
 
     Major, Minor, Patch = tonumber(Major), tonumber(Minor), tonumber(Patch)
 
