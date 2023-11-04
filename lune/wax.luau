@@ -9,7 +9,7 @@ do
     -- Minimum "recommended" ver
     local MajorRec,
           MinorRec,
-          PatchRec = 0, 7, 8
+          PatchRec = 0, 7, 11
 
     local Major,
           Minor,
