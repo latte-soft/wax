@@ -448,11 +448,10 @@ elseif Subcommand == "bundle" then
 
     -- Let the user *clearly* know if there were any user-fault compiler errors
     if FailedCompilations > 0 then
-        Log.Warn(`\nWARNING: {FailedCompilations} scripts failed to compile ahead-of-time (CHECK FULL BUILD LOG ABOVE FOR MORE DETAILS); these will throw errors at runtime upon being loaded, detailing said compilation errors.`)
+        print()
+        Log.Warn(`WARNING: {FailedCompilations} scripts failed to compile ahead-of-time (CHECK FULL BUILD LOG ABOVE FOR MORE DETAILS); these will throw errors at runtime upon being loaded, detailing said compilation errors.`)
 
-        if CIMode then
-            process.exit(1)
-        end
+        process.exit(1)
     end
 else
     Log.Error(`Subcommand "{Subcommand}" invalid, see usage for all valid subcommands:\n`)
