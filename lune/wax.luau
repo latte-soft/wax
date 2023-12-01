@@ -33,16 +33,17 @@ local stdio = require("@lune/stdio")
 local roblox = require("@lune/roblox")
 local process = require("@lune/process")
 
+local LuneUtils = require("lib/libraries/LuneUtils")
 local BundleModel = require("lib/BundleModel")
-
-local Log = require("lib/Log")
-local StringUtils = require("lib/StringUtils")
-local CommandUtils = require("lib/CommandUtils")
-local Run = require("lib/Run")
-local ParseArgs = require("lib/ParseArgs")
 
 local Version = require("lib/data/Version")
 local DefaultDarkluaConfig = require("lib/data/DefaultDarkluaConfig")
+
+local Log = LuneUtils.Log
+local StringUtils = LuneUtils.StringUtils
+local CommandUtils = LuneUtils.CommandUtils
+local Run = LuneUtils.Run
+local ParseArgs = LuneUtils.ParseArgs
 
 local UsageMessage = `Wax {Version}\n` .. [[
 A Fast Runtime Lua 5.1x+/Luau Project Bundler, Using Roblox Models and Module-Require Semantics

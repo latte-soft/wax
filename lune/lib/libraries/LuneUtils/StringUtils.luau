@@ -50,6 +50,19 @@ function StringUtils.DirectoryOfFilePath(filePath: string): string?
     return Directory
 end
 
+function StringUtils.SplitStringByPattern(originalString: string, pattern: string)
+    local SplitArray = {}
+    for Match in string.gmatch(originalString, pattern) do
+        table.insert(SplitArray, Match)
+    end
+
+    return SplitArray
+end
+
+function StringUtils.SplitFilePath(filePath: string)
+    return StringUtils.SplitStringByPattern(filePath, "([^/\\]+)[/\\]?")
+end
+
 function StringUtils.LineCount(input: string): number
     local Lines = 1
     for _ in string.gmatch(input, "\n") do
@@ -63,6 +76,7 @@ function StringUtils.Replace(inputString: string, replacements: {[string]: strin
     return string.gsub(inputString, "${([A-Za-z_][A-Za-z0-9_]*)}", replacements)
 end
 
+-- Based from https://github.com/regginator/LuaEncode/blob/995daa18266dab2e2b94f43189d6eadb46f82c79/src/LuaEncode.lua#L76-L108
 do
     -- These are control characters to be encoded in a certain way in Lua rather than just a byte
     -- escape (e.g. "\n" -> "\10")

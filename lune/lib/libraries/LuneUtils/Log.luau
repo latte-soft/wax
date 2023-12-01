@@ -20,7 +20,7 @@ end
 
 function Log.Error(message: string, ending: string?)
     ending = ending or "\n"
-    stdio.write(`{ANSI.Bold .. ANSI.Red}∙ {message}{ANSI.Reset}{ending}`)
+    stdio.ewrite(`{ANSI.Bold .. ANSI.Red}∙ {message}{ANSI.Reset}{ending}`)
 end
 
 function Log.Warn(message: string, ending: string?)

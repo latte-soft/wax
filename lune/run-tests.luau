@@ -6,10 +6,12 @@
 local fs = require("@lune/fs")
 local process = require("@lune/process")
 
-local Log = require("lib/Log")
-local StringUtils = require("lib/StringUtils")
-local CommandUtils = require("lib/CommandUtils")
-local Run = require("lib/Run")
+local LuneUtils = require("lib/libraries/LuneUtils")
+
+local Log = LuneUtils.Log
+local StringUtils = LuneUtils.StringUtils
+local CommandUtils = LuneUtils.CommandUtils
+local Run = LuneUtils.Run
 
 CommandUtils.CheckCommands({"lune", "luau", "lua5.1", "rojo", "darklua"})
 

@@ -4,7 +4,6 @@ local process = require("@lune/process")
 
 local CommandUtils = {}
 
--- We'll check some required commands in a sec
 function CommandUtils.CommandExists(binary: string): boolean
     if process.os ~= "windows" then
         -- Unix-compliance is simple!

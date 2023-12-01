@@ -3,8 +3,10 @@
 local luau = require("@lune/luau")
 local roblox = require("@lune/roblox")
 
-local Log = require("Log")
-local StringUtils = require("StringUtils")
+local LuneUtils = require("libraries/LuneUtils")
+
+local Log = LuneUtils.Log
+local StringUtils = LuneUtils.StringUtils
 
 local LuaEncode = require("libraries/LuaEncode")
 

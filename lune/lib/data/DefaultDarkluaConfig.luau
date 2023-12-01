@@ -1,10 +1,12 @@
-return [[
-{
-    "generator": {
-        "name": "dense",
-        "column_span": 100
+local serde = require("@lune/serde")
+
+local Config = {
+    generator = {
+        name = "dense",
+        column_span = 120,
     },
-    "rules": [
+
+    rules = {
         "convert_index_to_field",
         "compute_expression",
         "group_local_assignment",
@@ -17,9 +19,12 @@ return [[
         "remove_spaces",
         "remove_unused_if_branch",
         "remove_unused_while",
+
         {
-            "rule": "rename_variables",
-            "include_functions": true
-        }
-    ]
-}]]
+            rule = "rename_variables",
+            include_functions = true,
+        },
+    },
+}
+
+return serde.encode("json", Config, false)
