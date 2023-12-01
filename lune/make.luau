@@ -72,12 +72,12 @@ local function HandleRun(...)
     end
 end
 
-HandleRun("lune", {"wax", "bundle", "output=build/wax.luau", `extra-offset-lines={CodegenHeaderExtraLines}`, "ci-mode=true"})
-HandleRun("lune", {"wax", "bundle", "output=build/wax.dbg.luau", "ci-mode=true", "minify=true"})
+HandleRun("lune", {"wax", "bundle", "output=build/wax.dbg.luau", `extra-offset-lines={CodegenHeaderExtraLines}`, "ci-mode=true"})
+HandleRun("lune", {"wax", "bundle", "output=build/wax.luau", "minify=true", "ci-mode=true"})
 
 Log.Info("(Adding CodegenHeader)")
+WriteFile("build/wax.dbg.luau", CodegenHeader .. fs.readFile("build/wax.dbg.luau"))
 WriteFile("build/wax.luau", CodegenHeader .. fs.readFile("build/wax.luau"))
-WriteFile("build/wax.luau", CodegenHeader .. fs.readFile("build/wax.dbg.luau"))
 
 print()
 Log.Info(`++++++++ Finished build target ++++++++`)
