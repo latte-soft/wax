@@ -86,7 +86,7 @@ local function BundleModel(modelData: string | {roblox.Instance}, envName: strin
 
         local ClassNameId = ClassNameIdKeys[ClassName]
         if not ClassNameId then
-            RunIfVerbose(Log.Info, `Skipping instance of ClassName "{ClassName}", as it isn't supported in bundling`)
+            Log.Warn(`Skipping instance of ClassName "{ClassName}", as it isn't supported in bundling`)
             return
         end
 
