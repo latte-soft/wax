@@ -32,7 +32,7 @@ local CodegenHeaderExtraLines = StringUtils.LineCount(CodegenHeader) - 1
 
 CommandUtils.CheckCommands({"lune", "rojo", "darklua"})
 
-local BuildMode = process.args[1] or "debug"
+local BuildMode = process.args[1] or "release"
 BuildMode = string.lower(BuildMode)
 
 if not table.find({"debug", "release"}, BuildMode) then
@@ -82,9 +82,7 @@ end
 if BuildMode == "debug" then
     HandleRun("lune", {"wax", "bundle", "input=default.project.json", "output=build/wax.luau", `extra-offset-lines={CodegenHeaderExtraLines}`, "ci-mode=true"})
 elseif BuildMode == "release" then
-    Log.Error("`release` mode is not currently enabled, as Darklua does not yet support string interpolation, which Wax uses heavily (https://github.com/seaofvoices/darklua/pull/94)")
-    process.exit(1)
-    --HandleRun("lune", {"wax", "bundle", "input=default.project.json", "output=build/wax.luau", "minify=true", `extra-offset-lines={CodegenHeaderExtraLines}`, "ci-mode=true"})
+    HandleRun("lune", {"wax", "bundle", "input=default.project.json", "output=build/wax.luau", `extra-offset-lines={CodegenHeaderExtraLines}`, "ci-mode=true", "minify=true"})
 end
 
 Log.Info("(Adding CodegenHeader)")
