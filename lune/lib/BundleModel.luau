@@ -73,7 +73,8 @@ local function BundleModel(modelData: string | {roblox.Instance}, envName: strin
     end
 
     -- Initialize the scraped instance tree and assign all refs from root
-    for _, RealInstance in ModelRoot do
+    local ModelRootChildren = ModelRoot -- Using later aswell
+    for _, RealInstance in ModelRootChildren do
         ScrapedInstanceTree[RealInstance] = ScrapeInstanceChildren(RealInstance)
     end
 
@@ -216,6 +217,19 @@ local function BundleModel(modelData: string | {roblox.Instance}, envName: strin
         ClosureBindings = SerializedClosureBindings,
         LineOffsets = SerializedLineOffsets,
     })
+
+    -- If there's a top-level init modulescript, we'll return it from the output's closure directly
+    -- It's better to impl this all AoT!
+    if #ModelRootChildren == 1 and ModelRootChildren[1].ClassName == "ModuleScript" then
+        CodegenOutput ..= "\n-- AoT adjustment: Load init module (MainModule behavior)\nreturn LoadScript(RealObjectRoot:GetChildren()[1])"
+    else
+        for _, Ref in next, ModelRootChildren do
+            if Ref.ClassName == "ModuleScript" and Ref.Name == "MainModule" then
+                CodegenOutput ..= "\n-- AoT adjustment: Load init module (MainModule behavior)\nreturn LoadScript(RealObjectRoot:FindFirstChild(\"MainModule\"))"
+                break
+            end
+        end
+    end
 
     return CodegenOutput, FailedCompilations
 end
