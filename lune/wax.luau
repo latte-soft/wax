@@ -111,6 +111,8 @@ SUBCOMMANDS:
             "Verbose" (detailed) output logging from CLI/bundler
 ]]
 
+local DirectionToHelp = "Run `lune wax help` for more info"
+
 -- Flush out any other previous ANSI nonsense
 stdio.write(stdio.color("reset") .. stdio.style("reset"))
 
@@ -194,7 +196,7 @@ elseif Subcommand == "bundle" then
 
     if not fs.isFile(Input) then
         Log.Error(`Failed to find file path "{Input}" from \`input\` option\n`)
-        print(UsageMessage)
+        print(DirectionToHelp)
         process.exit(1)
     end
 
@@ -211,7 +213,7 @@ elseif Subcommand == "bundle" then
 
     if not InputType then
         Log.Error(`Invalid file type ".{StringUtils.FileType(Input)}" for \`input\`, expected [".rbxm", ".rbxmx", ".project.json"]\n`)
-        print(UsageMessage)
+        print(DirectionToHelp)
         process.exit(1)
     end
 
@@ -255,17 +257,17 @@ elseif Subcommand == "bundle" then
 
         if not DirectoryOfOutput then
             Log.Error(`\`output\` file path given, "{Output}" not a valid path\n`)
-            print(UsageMessage)
+            print(DirectionToHelp)
             process.exit(1)
         elseif not fs.isDir(DirectoryOfOutput) then
             Log.Error(`Directory of \`output\` file path given, "{DirectoryOfOutput}" not found/invalid\n`)
-            print(UsageMessage)
+            print(DirectionToHelp)
             process.exit(1)
         elseif not OutputFileType or not table.find({"lua", "luau"}, OutputFileType) then
             local FileTypeDisplay = if OutputFileType == "" then "<empty>" else "." .. OutputFileType
 
             Log.Error(`File type of \`output\` ({FileTypeDisplay}) invalid, expected [".lua", ".luau"]\n`)
-            print(UsageMessage)
+            print(DirectionToHelp)
             process.exit(1)
         end
     end
@@ -299,7 +301,7 @@ elseif Subcommand == "bundle" then
         TempDirBase = StringUtils.DirectoryOfFilePath(Output)
     elseif not fs.isDir(TempDirBase) then
         Log.Error(`\`temp-dir-base\` directory given, "{TempDirBase}" not found/invalid\n`)
-        print(UsageMessage)
+        print(DirectionToHelp)
         process.exit(1)
     end
 
@@ -319,7 +321,7 @@ elseif Subcommand == "bundle" then
     ExtraOffsetLines = Options["extra-offset-lines"]
     if ExtraOffsetLines < 0 then
         Log.Error(`Option \`extra-offset-lines\` ({ExtraOffsetLines}) cannot be less than 0\n`)
-        print(UsageMessage)
+        print(DirectionToHelp)
         process.exit(1)
     end
     if not Minify and ExtraOffsetLines > 0 then
@@ -345,7 +347,7 @@ elseif Subcommand == "bundle" then
     -- Check for necessary commands
     if InputType == ".project.json" and not CommandUtils.CommandExists("rojo") then
         Log.Error(`Rojo project file given for input ("{Input}"), but the \`rojo\` command wasn't found in your PATH environment variable..\n`)
-        print(UsageMessage)
+        print(DirectionToHelp)
         process.exit(1)
     end
 
