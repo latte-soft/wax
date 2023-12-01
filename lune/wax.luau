@@ -396,7 +396,6 @@ elseif Subcommand == "bundle" then
         RemoveFile(ModelOutputFileName) -- Remove temporary rbxm
     end
 
-    RunIfVerbose(Log.Info, "Starting BundleModel() process from deserialized model data")
     local BundleSuccess, CodegenOutputOrError, FailedCompilations = pcall(BundleModel, ModelRoot, EnvName, Minify, ExtraOffsetLines, Verbose)
 
     if not BundleSuccess then
