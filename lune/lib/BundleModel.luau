@@ -188,7 +188,7 @@ local function BundleModel(modelData: string | {roblox.Instance}, envName: strin
 
     -- Now we're done reading everything!
     local ReadEndTime = os.clock()
-    RunIfVerbose(Log.Info, `Finished reading object tree! Total build time: {string.format("%.4f", ReadEndTime - ReadStartTime)} (seconds)`)
+    RunIfVerbose(Log.Info, `Finished bundling model data in {string.format("%.4f", ReadEndTime - ReadStartTime)} (seconds)`)
 
     local Prettify = if MinifyCodegen == false then true else false
 
