@@ -34,11 +34,6 @@ local CodegenHeaderExtraLines = StringUtils.LineCount(CodegenHeader) - 1
 
 CommandUtils.CheckCommands({"lune", "rojo", "darklua"})
 
-local function Copy(originalPath: string, newPath: string)
-    Log.Info(`Copying "{originalPath}" to "{newPath}"..`)
-    fs.copy(originalPath, newPath, true)
-end
-
 local function WriteFile(path: string, contents: string)
     Log.Info(`Writing to "{path}"..`)
     fs.writeFile(path, contents)
@@ -62,7 +57,6 @@ if fs.isDir("build") then
 end
 
 WriteDir("build")
-Copy("LICENSE", "build/LICENSE")
 
 local function HandleRun(...)
     local Result = Run(...)
