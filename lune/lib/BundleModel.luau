@@ -225,7 +225,7 @@ local function BundleModel(modelData: string | {roblox.Instance}, envName: strin
     else
         for _, Ref in next, ModelRootChildren do
             if Ref.ClassName == "ModuleScript" and Ref.Name == "MainModule" then
-                CodegenOutput ..= "\n-- AoT adjustment: Load init module (MainModule behavior)\nreturn LoadScript(RealObjectRoot:FindFirstChild(\"MainModule\"))"
+                CodegenOutput ..= "\n-- AoT adjustment: Load init module (MainModule behavior)\nreturn LoadScript(RealObjectRoot.MainModule)"
                 break
             end
         end
