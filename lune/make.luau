@@ -34,15 +34,6 @@ local CodegenHeaderExtraLines = StringUtils.LineCount(CodegenHeader) - 1
 
 CommandUtils.CheckCommands({"lune", "rojo", "darklua"})
 
-local BuildMode = process.args[1] or "release"
-BuildMode = string.lower(BuildMode)
-
-if not table.find({"debug", "release"}, BuildMode) then
-    Log.Error(`Argument 1 (BuildMode) "{BuildMode}" invalid, expected ["debug", "release"]`)
-end
-
-Log.Info(`++++++++ Building Wax for target {string.upper(BuildMode)} ++++++++\n`)
-
 local function Copy(originalPath: string, newPath: string)
     Log.Info(`Copying "{originalPath}" to "{newPath}"..`)
     fs.copy(originalPath, newPath, true)
@@ -81,14 +72,12 @@ local function HandleRun(...)
     end
 end
 
-if BuildMode == "debug" then
-    HandleRun("lune", {"wax", "bundle", "input=default.project.json", "output=build/wax.luau", `extra-offset-lines={CodegenHeaderExtraLines}`, "ci-mode=true"})
-elseif BuildMode == "release" then
-    HandleRun("lune", {"wax", "bundle", "input=default.project.json", "output=build/wax.luau", `extra-offset-lines={CodegenHeaderExtraLines}`, "ci-mode=true", "minify=true"})
-end
+HandleRun("lune", {"wax", "bundle", "output=build/wax.luau", `extra-offset-lines={CodegenHeaderExtraLines}`, "ci-mode=true"})
+HandleRun("lune", {"wax", "bundle", "output=build/wax.dbg.luau", "ci-mode=true", "minify=true"})
 
 Log.Info("(Adding CodegenHeader)")
 WriteFile("build/wax.luau", CodegenHeader .. fs.readFile("build/wax.luau"))
+WriteFile("build/wax.luau", CodegenHeader .. fs.readFile("build/wax.dbg.luau"))
 
 print()
-Log.Info(`++++++++ Finished build for target {string.upper(BuildMode)} ++++++++`)
+Log.Info(`++++++++ Finished build target ++++++++`)
