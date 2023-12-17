@@ -253,10 +253,18 @@ cd wax
 aftman install
 ```
 
-3. Build with `lune`:
+3. Build with `lune` ([lune/make.luau](lune/make.luau)):
 
 ```
 lune make
+```
+
+If successful, the resulting bundled scripts will be output in the `build/` directory:
+
+```
+build
+├── wax.dbg.luau
+└── wax.luau
 ```
 
 ## 🏛️ License
