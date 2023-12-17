@@ -1,4 +1,4 @@
 [tools]
 lune = "filiptibell/lune@0.7.11"
 rojo = "rojo-rbx/rojo@7.4.0-rc3"
-darklua = "seaofvoices/darklua@0.12.0"
+darklua = "seaofvoices/darklua@0.12.1"
