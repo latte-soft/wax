@@ -172,7 +172,7 @@ SUBCOMMANDS:
 ## Runtime Spec Details
 
 * If there's only 1 instance directly under the model root and it's a `ModuleScript`, that module will automatically run at init and pass its return through the **real** script, just as expected with normal module behavior. Additionally, like a model on Roblox's [Developer Marketplace](https://create.roblox.com/marketplace/models), a `ModuleScript` under the model root named (exactly) "MainModule" will also have the same functionality, even if there is more than 1 instance directly under the model root
-* The real `getfenv`/`setfenv` functions are not overriden by global flattening whatsoever, so by using for example `getfenv(0)` it will return the actual root function environment of the script. *Just know that its behavior isn't modified whatsoever for virtual closures!*
+* The real `getfenv`/`setfenv` functions are not overriden by global flattening whatsoever, so by using for example `getfenv(0)` it will return the actual root function environment of the complete, bundled script. *Just know that its behavior isn't modified whatsoever for virtual closures!*
 * Instance `ClassName`s that will bundle:
   * `Folder`
   * `Script`
