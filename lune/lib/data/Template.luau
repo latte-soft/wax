@@ -128,7 +128,7 @@ local InstanceMethods = {
             for Child in next, Children do
                 -- Yeah, Roblox follows this behavior- instead of searching the entire base of a
                 -- ref first, the engine uses a direct recursive call
-                return Child:FindFirstChild(name, recursive)
+                return Child:FindFirstChild(name, true)
             end
         end
     end},
