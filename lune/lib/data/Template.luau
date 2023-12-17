@@ -2,6 +2,8 @@
 -- With that being said, this explains the weird cflow in some parts
 
 return [[
+-- ++++++++ WAX BUNDLED DATA BELOW ++++++++ --
+
 -- Will be used later for getting flattened globals
 local ImportGlobals
 

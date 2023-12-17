@@ -10,11 +10,11 @@ local StringUtils = LuneUtils.StringUtils
 
 local LuaEncode = require("libraries/LuaEncode")
 
+local Version = require("data/Version")
+
 -- Init script template for codegen (in this, we'll maintain 5.1 *syntax* compat
 -- for optional compilation to vanilla Lua 5.1x bytecode format)
 local InitScriptTemplate = require("data/Template")
-
-local Version = require("data/Version")
 
 local ClassNameIdKeys = {
     Folder = 1,
@@ -179,7 +179,7 @@ local function BundleModel(modelData: string | {roblox.Instance}, envName: strin
     local LineOffsets = {}
     if LineDebugging then
         -- Starts at line 6, where the first closure func start should be
-        local CurrentLineOffset = ExtraLinesToOffset + 6
+        local CurrentLineOffset = ExtraLinesToOffset + 8
 
         for RefId, LineCount in ClosureSourceLineCounts do
             LineOffsets[RefId] = CurrentLineOffset
