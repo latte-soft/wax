@@ -30,6 +30,16 @@ local CodegenHeader = [[
 
 ]=]
 
+local BuildFlags = {
+    ["build-standalone-wine"] = false
+}
+
+for _, BuildFlag in process.args do
+    if BuildFlags[BuildFlag] ~= nil then
+        BuildFlags[BuildFlag] = true
+    end
+end
+
 local CodegenHeaderExtraLines = StringUtils.LineCount(CodegenHeader) - 1
 
 CommandUtils.CheckCommands({"lune", "rojo", "darklua"})
@@ -66,12 +76,21 @@ local function HandleRun(...)
     end
 end
 
-HandleRun("lune", {"wax", "bundle", "output=build/wax.dbg.luau", `extra-offset-lines={CodegenHeaderExtraLines}`, "ci-mode=true"})
-HandleRun("lune", {"wax", "bundle", "output=build/wax.luau", "minify=true", "ci-mode=true"})
+HandleRun("lune", {"run", "wax", "bundle", "output=build/wax.dbg.luau", `extra-offset-lines={CodegenHeaderExtraLines}`, "ci-mode=true"})
+HandleRun("lune", {"run", "wax", "bundle", "output=build/wax.luau", "minify=true", "ci-mode=true"})
 
 Log.Info("(Adding CodegenHeader)")
 WriteFile("build/wax.dbg.luau", CodegenHeader .. fs.readFile("build/wax.dbg.luau"))
 WriteFile("build/wax.luau", CodegenHeader .. fs.readFile("build/wax.luau"))
+
+Log.Info("Building standalone Wax binary")
+HandleRun("lune", {"build", "build/wax.luau"})
+
+-- For cross-compilation to Windows from Unix
+if BuildFlags["build-standalone-wine"] then
+    Log.Info("Cross-building standalone Wax binary for Windows (via Wine on Unix)")
+    HandleRun("wine", {"lune", "build", "build/wax.luau"})
+end
 
 print()
 Log.Info(`++++++++ Finished build target ++++++++`)

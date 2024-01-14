@@ -43,8 +43,8 @@ for _, TestName in fs.readDir("tests") do
         pcall(fs.removeFile, OutputScriptPathMin)
     end
 
-    local BundleResult = Run("lune", {"wax", "bundle", `input={RojoProjectFilePath}`, `output={OutputScriptPath}`, "minify=false", "ci-mode=true", "verbose=false"})
-    local BundleResultMin = Run("lune", {"wax", "bundle", `input={RojoProjectFilePath}`, `output={OutputScriptPathMin}`, "minify=true", "ci-mode=true", "verbose=false"})
+    local BundleResult = Run("lune", {"run", "wax", "bundle", `input={RojoProjectFilePath}`, `output={OutputScriptPath}`, "minify=false", "ci-mode=true", "verbose=false"})
+    local BundleResultMin = Run("lune", {"run", "wax", "bundle", `input={RojoProjectFilePath}`, `output={OutputScriptPathMin}`, "minify=true", "ci-mode=true", "verbose=false"})
 
     local BadResult = if not BundleResult.ok then BundleResult elseif not BundleResultMin.ok then BundleResultMin else nil
     if BadResult and not DoNotExitForErrors then
@@ -65,8 +65,11 @@ for _, ScriptPathObject in ScriptFilesToTest do
 
     Log.Info(`Running script file "{StringUtils.FileNameFromPath(ScriptPath)}" for all targets..\n`)
 
-    local function RunWithCommand(binary: string)
-        Run(binary, {ScriptPath}, false, function(message: string?)
+    local function RunWithCommand(binary: string, args: {string}?)
+        args = args or {}
+        table.insert(args :: {any}, ScriptPath)
+
+        Run(binary, args, false, function(message: string?)
             if not DoNotExitForErrors then
                 if message then
                     Log.Error(message)

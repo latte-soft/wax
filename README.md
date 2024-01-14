@@ -20,7 +20,7 @@
 
 A Fast Runtime Lua 5.1x+/Luau Project Bundler, Using Roblox Models and Module-Require Semantics
 
-*Powered by [Lune](https://github.com/filiptibell/lune), a standalone Luau script runtime*
+*Powered by [Lune](https://github.com/lune-org/lune), a standalone Luau script runtime*
 
 ## 🎉 About
 
@@ -37,29 +37,30 @@ This is more of a successor to [Maui](https://github.com/latte-soft/maui), a sim
 * Built-in support for minifying bundled output directly with [Darklua](https://darklua.com) and either our default configuration (no extra steps), or your project's own `.darklua.json/json5` file for making personal tweaks.
 * Localized/flattened modified globals in closures, meaning `getfenv`/`setfenv` aren't used to modify the script's environment - This also means that in Luau, `safeenv` runtime optimizations are maintained, and closures run 'natively' with no user modification!
 * Automated CI/deployment pipeline usage in mind, with the `ci-mode` flag; no user confirmation prompts, and exits with a `1` status code upon any errors
-* A 'virtual' Roblox-like DOM for scripts that can run completely outside of Roblox, while also allowing module imports (`require()`) with a simulated relative `script` global, or traditional filesystem path strings like in [Lune](https://github.com/filiptibell/lune) or the Lua/Luau CLI REPLs.
+* A 'virtual' Roblox-like DOM for scripts that can run completely outside of Roblox, while also allowing module imports (`require()`) with a simulated relative `script` global, or traditional filesystem path strings like in [Lune](https://github.com/lune-org/lune) or the Lua/Luau CLI REPLs.
 
 Additionally, you can check out some example "projects" in our [tests](tests) directory if you don't really know what all of this is about, or how to get started..
 
 ## ⚙️ Installation
 
-For your project, you **must** have at least [Lune](https://github.com/filiptibell/lune) installed, most easily done and managed with [Aftman](https://github.com/LPGhatguy/aftman):
+For your project, you **must** have at least [Lune](https://github.com/lune-org/lune) installed, most easily done and managed with [Aftman](https://github.com/LPGhatguy/aftman):
 
 1. Goto Aftman's GitHub repository (linked above), and follow its installation instructions for your platform
 2. Open the root directory of your project in your system's terminal, and run the following:
 
 ```
 aftman init
-aftman add filiptibell/lune
+aftman add lune-org/lune
 ```
 
 3. If you've setup Aftman properly, you can now try running `lune --help`, and if all is well you should see something similar to the following in your terminal:
 
 ```
 $ lune --help
-A Luau script runner
+A standalone Luau runtime
 
-Usage: lune [OPTIONS] [SCRIPT_PATH] [SCRIPT_ARGS]...
+Usage: lune [COMMAND]
+...
 ```
 
 ### Add Wax to Your Lune Scripts
@@ -78,7 +79,7 @@ If you already have a "`lune`", "`.lune`", or similar directory in your project 
 ]]
 
 -- You set the following string to "latest" (case insensitive), or any version tag
--- on Wax's releases page (e.g. "0.3.7")
+-- on Wax's releases page (e.g. "0.4.0")
 local WaxVersion = "latest"
 
 -------------------------------------------------------------------------------
@@ -96,14 +97,14 @@ luau.load(net.request(FileLink).body, {
 
 ```
 
-3. Now, when running `lune wax`, you should see something similar to what's in the next section ([Usage](#🚀-usage)) in your terminal. Voilà!
+3. Now, when running `lune run wax`, you should see something similar to what's in the next section ([Usage](#🚀-usage)) in your terminal. Voilà!
 
 ## 🚀 Usage
 
-From your terminal in the root directory of your project, run `lune wax`, or just `lune <path/to/wax.luau>`
+From your terminal in the root directory of your project, run `lune run wax`, or just `lune run <path/to/wax.luau>`
 
 ```
-Wax 0.3.7
+Wax 0.4.0
 A Fast Runtime Lua 5.1x+/Luau Project Bundler, Using Roblox Models and Module-Require Semantics
 
 USAGE:

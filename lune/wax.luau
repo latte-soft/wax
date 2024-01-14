@@ -9,7 +9,7 @@ do
     -- Minimum "recommended" ver
     local MajorRec,
           MinorRec,
-          PatchRec = 0, 7, 11
+          PatchRec = 0, 8, 0
 
     local Major,
           Minor,
@@ -21,8 +21,8 @@ do
         print(`! Can't parse Lune's version on the assumed format from "{_VERSION}", continuing anyway..\n`)
     else
         _G.LuneVersion = `{Major}.{Minor}.{Patch}`
-        if Major < MajorRec or Minor < MinorRec or Patch < PatchRec then
-            print(`! Lune version "{_G.LuneVersion}" detected, Wax currently recommends Lune {MajorRec}.{MinorRec}.{PatchRec} or higher, continuing anyway..\n`)
+        if Major < MajorRec or (Minor < MinorRec and Major <= MajorRec) or (Patch < PatchRec and Minor <= MinorRec and Major <= MajorRec) then
+            print(`! Lune version "{_G.LuneVersion}" detected, but Wax currently recommends Lune {MajorRec}.{MinorRec}.{PatchRec} or higher, continuing anyway..\n`)
         end
     end
 end
