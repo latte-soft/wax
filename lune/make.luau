@@ -1,4 +1,4 @@
--- MIT License | Copyright (c) 2023 Latte Softworks <https://latte.to>
+-- MIT License | Copyright (c) 2023-2024 Latte Softworks <https://latte.to>
 
 local fs = require("@lune/fs")
 local process = require("@lune/process")
@@ -20,7 +20,7 @@ local CodegenHeader = [[
 
 --[[
     Wax - A Fast Runtime Lua 5.1x+/Luau Project Bundler, Using Roblox Models and Module-Require Semantics
-    MIT License | Copyright (c) 2023 Latte Softworks <https://latte.to>
+    MIT License | Copyright (c) 2023-2024 Latte Softworks <https://latte.to>
 
     Wax Version: ]] .. Version .. [=[
 

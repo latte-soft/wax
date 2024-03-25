@@ -1,4 +1,4 @@
--- MIT License | Copyright (c) 2023 Latte Softworks <https://latte.to>
+-- MIT License | Copyright (c) 2023-2024 Latte Softworks <https://latte.to>
 
 local fs = require("@lune/fs")
 

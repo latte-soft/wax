@@ -1,4 +1,4 @@
--- MIT License | Copyright (c) 2023 Latte Softworks <https://latte.to>
+-- MIT License | Copyright (c) 2023-2024 Latte Softworks <https://latte.to>
 
 if string.sub(_VERSION, 1, 4) ~= "Lune" then
     print("!! Wax doesn't appear to be running on Lune (https://lune-org.github.io/docs), which this script requires, exitting..")

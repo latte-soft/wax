@@ -75,7 +75,7 @@ If you already have a "`lune`", "`.lune`", or similar directory in your project 
 ```lua
 --[[
     Wax - A Fast Runtime Lua 5.1x+/Luau Project Bundler, Using Roblox Models and Module-Require Semantics
-    MIT License | Copyright (c) 2023 Latte Softworks <https://latte.to>
+    MIT License | Copyright (c) 2023-2024 Latte Softworks <https://latte.to>
 ]]
 
 -- You set the following string to "latest" (case insensitive), or any version tag
@@ -279,7 +279,7 @@ build
 ```
 MIT License
 
-Copyright (c) 2023 Latte Softworks <https://latte.to>
+Copyright (c) 2023-2024 Latte Softworks <https://latte.to>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -1,6 +1,6 @@
 --[[
     Wax - A Fast Runtime Lua 5.1x+/Luau Project Bundler, Using Roblox Models and Module-Require Semantics
-    MIT License | Copyright (c) 2023 Latte Softworks <https://latte.to>
+    MIT License | Copyright (c) 2023-2024 Latte Softworks <https://latte.to>
 ]]
 
 -- You set the following string to "latest" (case insensitive), or any version tag

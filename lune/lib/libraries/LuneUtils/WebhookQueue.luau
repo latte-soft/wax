@@ -1,4 +1,4 @@
--- MIT License | Copyright (C) 2023 Latte Softworks <https://latte.to>
+-- MIT License | Copyright (c) 2023-2024 Latte Softworks <https://latte.to>
 
 export type WebhookObject = {[string]: any}
 

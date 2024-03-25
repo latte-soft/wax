@@ -1,4 +1,4 @@
--- MIT License | Copyright (c) 2023 Latte Softworks <https://latte.to>
+-- MIT License | Copyright (c) 2023-2024 Latte Softworks <https://latte.to>
 
 type OptionsInput = {[string]: {string | number | boolean | nil}}
 type OptionsOutput = {[string]: string | number | boolean | nil}

@@ -1,4 +1,4 @@
--- MIT License | Copyright (c) 2023 Latte Softworks <https://latte.to>
+-- MIT License | Copyright (c) 2023-2024 Latte Softworks <https://latte.to>
 
 -- This is a basic automated "test" runner, just for overlooking basic
 -- functionality and making sure everything works as expected and implemented
