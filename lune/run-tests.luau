@@ -13,7 +13,7 @@ local StringUtils = LuneUtils.StringUtils
 local CommandUtils = LuneUtils.CommandUtils
 local Run = LuneUtils.Run
 
-CommandUtils.CheckCommands({"lune", "luau", "lua5.1", "rojo", "darklua"})
+CommandUtils.CheckCommands({"lune", "luau", "lua5.1", "lua52", "rojo", "darklua"})
 
 print("\n++++++++++ BUNDLING TEST PROJECTS ++++++++++\n")
 
@@ -93,6 +93,7 @@ for _, ScriptPathObject in ScriptFilesToTest do
     end
 
     RunWithCommand("lua5.1")
+    RunWithCommand("lua52")
     RunWithCommand("luau")
     RunWithCommand("lune", {"run"})
 
