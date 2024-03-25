@@ -61,12 +61,16 @@ end
 
 -- Start build process
 
+--[[
 if fs.isDir("build") then
     Log.Info("Removing old `build` directory..")
     fs.removeDir("build")
 end
+]]
 
-WriteDir("build")
+if not fs.isDir("build") then
+    WriteDir("build")
+end
 
 local function HandleRun(...)
     local Result = Run(...)
