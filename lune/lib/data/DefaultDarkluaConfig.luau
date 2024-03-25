@@ -17,6 +17,7 @@ local Config = {
         "remove_nil_declaration",
         "remove_method_definition",
         "remove_spaces",
+        "remove_unused_variable",
         "remove_unused_if_branch",
         "remove_unused_while",
 
