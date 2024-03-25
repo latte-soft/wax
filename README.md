@@ -108,7 +108,7 @@ Wax 0.4.0
 A Fast Runtime Lua 5.1x+/Luau Project Bundler, Using Roblox Models and Module-Require Semantics
 
 USAGE:
-    lune wax [subcommand] [options]
+    lune run wax [subcommand] [options]
 
 * When no subcommand is provided, this usage message is displayed
 * Provide all options in the following format (no "--" flag prefix): option=value
