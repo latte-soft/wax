@@ -69,6 +69,17 @@ for _, ScriptPathObject in ScriptFilesToTest do
         args = args or {}
         table.insert(args :: {any}, ScriptPath)
 
+        Log.Info(`> {binary} {table.concat(args :: {}, " ")}`)
+        local Result = process.spawn(binary, args, {
+            shell = true,
+            stdio = "inherit",
+        })
+
+        if not Result.ok and not DoNotExitForErrors then
+            process.exit(1)
+        end
+
+        --[[
         Run(binary, args, false, function(message: string?)
             if not DoNotExitForErrors then
                 if message then
@@ -78,13 +89,12 @@ for _, ScriptPathObject in ScriptFilesToTest do
                 process.exit(1)
             end
         end)
-
-        print()
+        ]]
     end
 
     RunWithCommand("lua5.1")
     RunWithCommand("luau")
-    RunWithCommand("lune")
+    RunWithCommand("lune", {"run"})
 
     print("--------------------------------------------------------------------------------\n")
 end
