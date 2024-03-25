@@ -437,7 +437,7 @@ function ImportGlobals(refId)
         local ErrorNonModuleScript = "Attempted to call require with a non-ModuleScript"
         local ErrorSelfRequire = "Attempted to call require with self"
 
-        if ModuleArgType == "userdata" and RefChildren[module]  then
+        if ModuleArgType == "table" and RefChildren[module]  then
             if module.ClassName ~= "ModuleScript" then
                 error(ErrorNonModuleScript, 2)
             elseif module == ScriptRef then
