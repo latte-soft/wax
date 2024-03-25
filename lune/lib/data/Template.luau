@@ -23,8 +23,8 @@ local EnvName = "${EnvName}"
 -- ++++++++ RUNTIME IMPL BELOW ++++++++ --
 
 -- Localizing certain libraries and built-ins for runtime efficiency
-local string, task, setmetatable, error, newproxy, getmetatable, next, table, unpack, coroutine, script, type, require, pcall, tostring, tonumber, _VERSION =
-      string, task, setmetatable, error, newproxy, getmetatable, next, table, unpack, coroutine, script, type, require, pcall, tostring, tonumber, _VERSION
+local string, task, setmetatable, error, next, table, unpack, coroutine, script, type, require, pcall, tostring, tonumber, _VERSION =
+      string, task, setmetatable, error, next, table, unpack, coroutine, script, type, require, pcall, tostring, tonumber, _VERSION
 
 local table_insert = table.insert
 local table_remove = table.remove
@@ -203,8 +203,8 @@ local function CreateRef(className, name, parent)
         error("Unable to assign (virtual) property " .. property .. ". Property is read only", 3)
     end
 
-    local Ref = newproxy(true)
-    local RefMetatable = getmetatable(Ref)
+    local Ref = {}
+    local RefMetatable = {}
 
     RefMetatable.__metatable = false
 
@@ -272,6 +272,8 @@ local function CreateRef(className, name, parent)
     RefMetatable.__tostring = function()
         return name
     end
+
+    setmetatable(Ref, RefMetatable)
 
     RefChildren[Ref] = Children
 
