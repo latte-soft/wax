@@ -16,6 +16,9 @@ local Version = require("data/Version")
 -- for optional compilation to vanilla Lua 5.1x bytecode format)
 local InitScriptTemplate = require("data/Template")
 
+-- The line where the 1st closure's function will start in bundled codegen
+local InitialLineOffset = 8
+
 local ClassNameIdKeys = {
     Folder = 1,
     ModuleScript = 2,
@@ -178,8 +181,8 @@ local function BundleModel(modelData: string | {roblox.Instance}, envName: strin
 
     local LineOffsets = {}
     if LineDebugging then
-        -- Starts at line 6, where the first closure func start should be
-        local CurrentLineOffset = ExtraLinesToOffset + 8
+        -- Where the first closure func start should be
+        local CurrentLineOffset = ExtraLinesToOffset + InitialLineOffset
 
         for RefId, LineCount in ClosureSourceLineCounts do
             LineOffsets[RefId] = CurrentLineOffset
