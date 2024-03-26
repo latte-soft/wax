@@ -128,8 +128,6 @@ local function BundleModel(modelData: string | {roblox.Instance}, envName: strin
                     return "function()local wax,script,require=ImportGlobals(" .. RefId .. ")local ImportGlobals return (function(...)" .. ScriptSource .. "\nend)() end"
                 end
             else
-                -- The `18` index in the substring call is for after the end of, e.g. "runtime error: :"
-                -- After that, we have, e.g. "1: ", which is the line num. This can be higher, of course
                 local FirstLineOfError = string.match(tostring(CompileError), "%w* ?:%d*: ?([^\n]*)\n")
                 Log.Warn(`WARNING: {instance.ClassName} "{currentPathString}" failed to compile: {FirstLineOfError or "[Failed to parse compiler error]"}`)
                 FailedCompilations += 1
