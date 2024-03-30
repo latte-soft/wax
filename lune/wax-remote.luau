@@ -1,5 +1,5 @@
 --[[
-    Wax - A Fast Runtime Lua 5.1x+/Luau Project Bundler, Using Roblox Models and Module-Require Semantics
+    Wax - A Fast Runtime-Based Lua 5.1x+/Luau Project Bundler, Using Roblox Models and Module-Require Semantics
     MIT License | Copyright (c) 2023-2024 Latte Softworks <https://latte.to>
 ]]
 

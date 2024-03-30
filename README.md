@@ -18,7 +18,7 @@
 
 [![Stars][badges/stars]][stars] [![License][badges/license]][license] [![Latest Release][badges/latest-release]][latest-release] [![Last Modified][badges/last-modified]][commits] [![Discord Server][badges/discord]][discord]
 
-A Fast Runtime Lua 5.1x+/Luau Project Bundler, Using Roblox Models and Module-Require Semantics
+A Fast Runtime-Based Lua 5.1x+/Luau Project Bundler, Using Roblox Models and Module-Require Semantics
 
 *Powered by [Lune](https://github.com/lune-org/lune), a standalone Luau script runtime*
 
@@ -74,7 +74,7 @@ If you already have a "`lune`", "`.lune`", or similar directory in your project 
 
 ```lua
 --[[
-    Wax - A Fast Runtime Lua 5.1x+/Luau Project Bundler, Using Roblox Models and Module-Require Semantics
+    Wax - A Fast Runtime-Based Lua 5.1x+/Luau Project Bundler, Using Roblox Models and Module-Require Semantics
     MIT License | Copyright (c) 2023-2024 Latte Softworks <https://latte.to>
 ]]
 
@@ -105,7 +105,7 @@ From your terminal in the root directory of your project, run `lune run wax`, or
 
 ```
 Wax 0.4.1
-A Fast Runtime Lua 5.1x+/Luau Project Bundler, Using Roblox Models and Module-Require Semantics
+A Fast Runtime-Based Lua 5.1x+/Luau Project Bundler, Using Roblox Models and Module-Require Semantics
 
 USAGE:
     lune run wax [subcommand] [options]
@@ -261,7 +261,7 @@ aftman install
 3. Build with `lune` ([lune/make.luau](lune/make.luau)):
 
 ```
-lune make
+lune run make
 ```
 
 If successful, the resulting bundled scripts will be output in the `build/` directory:
