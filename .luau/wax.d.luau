@@ -3,7 +3,7 @@ declare wax: {
     envname: string,
     shared: {[any]: any},
 
-    script: LuaSourceContainer?,
+    script: LuaSourceContainer,
 
     require: (...any) -> ...any,
 }
