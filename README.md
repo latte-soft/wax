@@ -79,7 +79,7 @@ If you already have a "`lune`", "`.lune`", or similar directory in your project 
 ]]
 
 -- You set the following string to "latest" (case insensitive), or any version tag
--- on Wax's releases page (e.g. "0.4.1")
+-- on Wax's releases page (e.g. "0.4.2")
 local WaxVersion = "latest"
 
 -------------------------------------------------------------------------------
@@ -104,7 +104,7 @@ luau.load(net.request(FileLink).body, {
 From your terminal in the root directory of your project, run `lune run wax`, or just `lune run <path/to/wax.luau>`
 
 ```
-Wax 0.4.1
+Wax 0.4.2
 A Fast Runtime-Based Lua 5.1x+/Luau Project Bundler, Using Roblox Models and Module-Require Semantics
 
 USAGE:
