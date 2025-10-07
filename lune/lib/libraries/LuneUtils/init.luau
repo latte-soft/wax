@@ -1,13 +1,13 @@
--- MIT License | Copyright (c) 2023-2024 Latte Softworks <https://latte.to>
+-- MIT License | Copyright (c) 2023-2025 Latte Softworks <https://latte.to>
 
 return {
-    Log = require("Log"),
-    StringUtils = require("StringUtils"),
-    CommandUtils = require("CommandUtils"),
-    WebhookQueue = require("WebhookQueue"),
+	Log = require("./LuneUtils/Log"),
+	StringUtils = require("./LuneUtils/StringUtils"),
+	CommandUtils = require("./LuneUtils/CommandUtils"),
+	WebhookQueue = require("./LuneUtils/WebhookQueue"),
 
-    Run = require("Run"),
-    ParseArgs = require("ParseArgs"),
-    EnsureFileTree = require("EnsureFileTree"),
-    RecursiveReadDir = require("RecursiveReadDir"),
+	Run = require("./LuneUtils/Run"),
+	ParseArgs = require("./LuneUtils/ParseArgs"),
+	EnsureFileTree = require("./LuneUtils/EnsureFileTree"),
+	RecursiveReadDir = require("./LuneUtils/RecursiveReadDir"),
 }
