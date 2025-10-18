@@ -463,7 +463,9 @@ function ImportGlobals(refId)
             local PreviousPathMatch
             for PathMatch in string_gmatch(module, "([^/]*)/?") do
                 local RealIndex = PathMatch
-                if PathMatch == ".." then
+                if PathMatch == "." then
+                    RealIndex = ""
+                elseif PathMatch == ".." then
                     CurrentRefPointer = CurrentRefPointer.Parent
                     RealIndex = ""
                 end
